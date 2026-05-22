@@ -1,0 +1,24 @@
+name: Publicacion Blog
+
+on:
+  schedule:
+    - cron: "0 14 * * 1"   # Lun 09:00 Peru — Analisis Semanal
+    - cron: "0 14 * * 3"   # Mie 09:00 Peru — Pulso Media Semana
+    - cron: "0 14 * * 5"   # Vie 09:00 Peru — Articulo Educativo
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm start
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-4.1-mini

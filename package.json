@@ -1,0 +1,21 @@
+{
+  "name": "dolarperuhoy-blog",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node src/index.js",
+    "dry-run": "node src/index.js --dry-run",
+    "weekly": "node src/index.js --type=weekly",
+    "midweek": "node src/index.js --type=midweek",
+    "educational": "node src/index.js --type=educational",
+    "dry-weekly": "node src/index.js --dry-run --type=weekly",
+    "dry-midweek": "node src/index.js --dry-run --type=midweek",
+    "dry-educational": "node src/index.js --dry-run --type=educational"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "dotenv": "^17.3.1",
+    "openai": "^4.0.0"
+  }
+}
