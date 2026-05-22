@@ -47,7 +47,8 @@ ESTRUCTURA:
   "tags": "string[] (3-6 tags)",
   "seo_title": "string (max 60 chars)",
   "seo_description": "string (max 160 chars)",
-  "read_time_minutes": "number (3-8)"
+  "read_time_minutes": "number (3-8)",
+  "featured_image_query": "string (busqueda corta para imagen de portada, ej: 'dolar billetes peru tipo de cambio')"
 }
 
 ESTRUCTURA DEL ARTICULO (body_html):
@@ -96,7 +97,8 @@ ESTRUCTURA:
   "tags": "string[] (3-6 tags)",
   "seo_title": "string (max 60 chars)",
   "seo_description": "string (max 160 chars)",
-  "read_time_minutes": "number (3-6)"
+  "read_time_minutes": "number (3-6)",
+  "featured_image_query": "string (busqueda corta para imagen de portada, ej: 'mercado cambiario dolar soles')"
 }
 
 ESTRUCTURA (body_html):
@@ -156,7 +158,8 @@ ESTRUCTURA:
   "tags": "string[] (3-6 tags relevantes al tema)",
   "seo_title": "string (max 60 chars)",
   "seo_description": "string (max 160 chars)",
-  "read_time_minutes": "number (4-8)"
+  "read_time_minutes": "number (4-8)",
+  "featured_image_query": "string (busqueda corta para imagen de portada relacionada al tema, ej: 'ahorros finanzas personales peru')"
 }
 
 ESTRUCTURA (body_html):

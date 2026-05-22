@@ -64,11 +64,13 @@ async function main() {
 
   console.log(`[blog] Titulo: ${article.title}`);
   console.log(`[blog] Tags: ${(article.tags || []).join(', ')}`);
+  console.log(`[blog] Imagen: ${article.featured_image_query || 'default'}`);
 
   if (isDryRun) {
     console.log(`\n========== DRY RUN ==========`);
     console.log(`Tipo: ${articleType}`);
     console.log(`Titulo: ${article.title}`);
+    console.log(`Imagen query: ${article.featured_image_query || '(default)'}`);
     console.log(`SEO: ${article.seo_title}`);
     console.log(`Desc: ${article.seo_description}`);
     console.log(`Tags: ${(article.tags || []).join(', ')}`);
