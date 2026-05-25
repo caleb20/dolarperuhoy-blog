@@ -63,11 +63,11 @@ function generateSlug(article, type) {
     case 'midweek':
       return `pulso-dolar-media-semana-${dateStr}`;
     case 'educational': {
-      const base = slugify(article.title).replace(/-+$/, '').slice(0, 60).replace(/-+$/, '');
+      const base = slugify(article.title).replace(/-+$/, '');
       return `educacion-financiera-${base}`;
     }
     default:
-      return `articulo-${dateStr}-${slugify(article.title).replace(/-+$/, '').slice(0, 40).replace(/-+$/, '')}`;
+      return `articulo-${dateStr}-${slugify(article.title).replace(/-+$/, '').replace(/-+$/, '')}`;
   }
 }
 
