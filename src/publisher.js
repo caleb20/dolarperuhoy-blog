@@ -16,8 +16,26 @@ const FEATURED_IMAGES = [
   { url: 'https://images.pexels.com/photos/7412073/pexels-photo-7412073.jpeg', keywords: ['presupuesto', 'budget', 'planificacion', 'planning', 'finanzas'] },
 ];
 
-function pickImage(query) {
+async function pickImage(query) {
   if (!query) return FEATURED_IMAGES[0].url;
+
+  const apiKey = process.env.PEXELS_API_KEY;
+  if (apiKey) {
+    try {
+      const res = await fetch(
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=3&orientation=landscape`,
+        { headers: { Authorization: apiKey } },
+      );
+      if (res.ok) {
+        const data = await res.json();
+        if (data.photos?.length > 0) {
+          return data.photos[0].src.large2x;
+        }
+      }
+    } catch {
+      // fallback
+    }
+  }
 
   const q = query.toLowerCase();
   let bestScore = 0;
@@ -132,7 +150,7 @@ export async function publishArticle(supabase, article, type, exchangeData) {
     return { slug, existing: true };
   }
 
-  const featured_image = pickImage(article.featured_image_query);
+  const featured_image = await pickImage(article.featured_image_query);
 
   const now = new Date().toISOString();
 
