@@ -29,7 +29,7 @@ async function pickImage(query) {
       if (res.ok) {
         const data = await res.json();
         if (data.photos?.length > 0) {
-          return data.photos[0].src.large2x;
+          return data.photos[0].src.large;
         }
       }
     } catch {

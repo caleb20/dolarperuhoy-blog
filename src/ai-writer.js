@@ -5,14 +5,14 @@ const MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
 const BASE_SYSTEM = `Eres un analista economico especializado en el mercado cambiario peruano (USD/PEN).
 Escribes contenido ORIGINAL para DolarPeruHoy.pe.
 
-REGLAS ESTRICTAS (APLICAN A TODOS LOS TIPOS):
+REGLAS ESTRICTAS:
 1. NO inventes fuentes externas, noticias, o citas de medios
-2. NO menciones "segun X medio" o "como reporto Y"
-3. NO copies contenido de otros sitios
-4. Escribe en español peruano, tono profesional pero accesible
-5. NO uses asteriscos ni markdown en body_html, solo HTML real
-6. Debe tener al menos 400 palabras
-7. Incluye un <h2>Conclusion</h2> al final`;
+2. NO copies contenido de otros sitios
+3. Escribe en español peruano, tono profesional pero accesible
+4. NO uses asteriscos ni markdown en body_html, solo HTML real
+5. Al menos 400 palabras
+6. Incluye una seccion de cierre o conclusion al final
+7. CADA ARTICULO debe tener ESTRUCTURA UNICA: varia los H2, no repitas el mismo patron entre articulos`;
 
 function getDayContext() {
   return new Date().toLocaleDateString('es-PE', {
@@ -21,9 +21,16 @@ function getDayContext() {
 }
 
 function buildWeeklyPrompt(data) {
+  const STRUCTURE_STYLES = [
+    'Empieza con el dato mas impactante de la semana, luego desarrolla el contexto, tendencia, comparativa entre casas de cambio, y cierra con perspectiva',
+    'Organizalo por temas: primero la apertura y cierre semanal, luego el dia clave, las mejores tasas, y finalmente la proyeccion',
+    'Estructura narrativa: situacion actual, factores que movieron el dolar, comparativa de casas, recomendacion practica',
+  ];
+  const selectedStyle = STRUCTURE_STYLES[Math.floor(Math.random() * STRUCTURE_STYLES.length)];
+
   return `Fecha actual: ${getDayContext()}
 
-Debes escribir un ANALISIS SEMANAL del tipo de cambio en Peru.
+Escribe un ANALISIS SEMANAL del dolar en Peru.
 
 DATOS DE LA SEMANA (${data.sunatWeek.length} dias utiles):
 ${JSON.stringify(data.sunatWeek, null, 2)}
@@ -36,11 +43,15 @@ ${JSON.stringify(data.snapshots.slice(0, 15), null, 2)}
 CASAS DE CAMBIO (tasas actuales):
 ${JSON.stringify(data.houses.slice(0, 10), null, 2)}
 
-Genera un analisis semanal en formato JSON.
-ESTRUCTURA:
+ESTRUCTURA DEL ARTICULO (body_html):
+${selectedStyle}
+
+USA TUS PROPIOS H2 segun el flujo del articulo, no los impongas desde afuera.
+
+JSON:
 {
-  "title": "string (max 70 chars, ej: 'Analisis Semanal del Dolar: del X al Y de Mayo')",
-  "excerpt": "string (2-3 oraciones de resumen, 130-200 chars)",
+  "title": "string (max 70 chars)",
+  "excerpt": "string (2-3 oraciones, 130-200 chars)",
   "body_html": "string (articulo completo en HTML, 400-800 palabras)",
   "analysis_text": "string (4-6 oraciones destacando lo mas importante)",
   "impact_text": "string (impacto en Peru, 3-4 oraciones)",
@@ -48,18 +59,10 @@ ESTRUCTURA:
   "seo_title": "string (max 60 chars)",
   "seo_description": "string (max 160 chars)",
   "read_time_minutes": "number (3-8)",
-  "featured_image_query": "string (busqueda corta para imagen de portada, ej: 'dolar billetes peru tipo de cambio')"
+  "featured_image_query": "string (busqueda corta para imagen de portada)"
 }
 
-ESTRUCTURA DEL ARTICULO (body_html):
-- <h2>Resumen semanal</h2>: apertura, cierre, variacion con cifras exactas
-- <h2>Dia con mayor variacion</h2>: cual dia cambio mas y cuanto
-- <h2>Comparativa entre casas de cambio</h2>: mejores tasas, diferencias
-- <h2>Perspectiva</h2>: tendencia basada en los datos
-- <h2>Recomendacion</h2>: consejo practico
-- <h2>Conclusion</h2>
-
-TODAS las cifras deben venir EXACTAMENTE de los datos proporcionados.`;
+TODAS las cifras deben venir EXACTAMENTE de los datos.`;
 }
 
 function buildMidweekPrompt(data) {
@@ -73,9 +76,15 @@ function buildMidweekPrompt(data) {
     variation = `En lo que va de semana, el dolar ha ${dir} de S/${Number(first.sell_rate).toFixed(3)} a S/${Number(last.sell_rate).toFixed(3)}`;
   }
 
+  const MID_STRUCTURES = [
+    'Comienza con la direccion del dolar en la semana, luego muestra las mejores tasas disponibles, y cierra con la perspectiva',
+    'Abre con el cambio mas notable desde el lunes, analiza las casas de cambio destacadas, y termina con proyeccion',
+  ];
+  const selectedMid = MID_STRUCTURES[Math.floor(Math.random() * MID_STRUCTURES.length)];
+
   return `Fecha actual: ${getDayContext()}
 
-Debes escribir un ANALISIS DE MEDIA SEMANA del tipo de cambio en Peru.
+Escribe un ANALISIS DE MEDIA SEMANA del dolar en Peru.
 
 DATOS RECIENTES:
 ${variation}
@@ -86,10 +95,14 @@ ${JSON.stringify(snapshots.slice(0, 10), null, 2)}
 CASAS DE CAMBIO (tasas actuales):
 ${JSON.stringify((data.houses || []).slice(0, 10), null, 2)}
 
-Genera un analisis de media semana en formato JSON.
-ESTRUCTURA:
+ESTRUCTURA (body_html):
+${selectedMid}
+
+USA TUS PROPIOS H2. No repitas la misma estructura de otros articulos.
+
+JSON:
 {
-  "title": "string (max 70 chars, ej: 'Pulso del Dolar a Media Semana: [tendencia]')",
+  "title": "string (max 70 chars)",
   "excerpt": "string (2-3 oraciones, 130-200 chars)",
   "body_html": "string (articulo en HTML, 300-500 palabras)",
   "analysis_text": "string (3-4 oraciones)",
@@ -98,14 +111,8 @@ ESTRUCTURA:
   "seo_title": "string (max 60 chars)",
   "seo_description": "string (max 160 chars)",
   "read_time_minutes": "number (3-6)",
-  "featured_image_query": "string (busqueda corta para imagen de portada, ej: 'mercado cambiario dolar soles')"
-}
-
-ESTRUCTURA (body_html):
-- <h2>Como va la semana</h2>: direccion del dolar, cifras
-- <h2>Mejores tasas hoy</h2>: casas de cambio destacadas
-- <h2>Perspectiva</h2>: hacia donde podria ir basado en la tendencia
-- <h2>Conclusion</h2>`;
+  "featured_image_query": "string (busqueda corta para imagen de portada)"
+}`;
 }
 
 const EDUCATIONAL_TOPICS = [
@@ -132,42 +139,44 @@ function getRandomTopic() {
 
 function buildEducationalPrompt() {
   const topic = getRandomTopic();
+  const EDU_STRUCTURES = [
+    'Abre con una pregunta o situacion cotidiana, luego explica los conceptos, da ejemplos practicos, y cierra con consejos aplicables',
+    'Empieza definiendo el problema, luego desarrolla las alternativas o soluciones, y termina con recomendaciones',
+    'Organizalo como guia paso a paso: primero los conceptos basicos, luego la aplicacion practica, y finalmente errores comunes a evitar',
+  ];
+  const selectedEdu = EDU_STRUCTURES[Math.floor(Math.random() * EDU_STRUCTURES.length)];
+
   return `Fecha actual: ${getDayContext()}
 
-Debes escribir un ARTICULO EDUCATIVO sobre el tipo de cambio en Peru.
+Escribe un ARTICULO EDUCATIVO sobre el dolar en Peru.
 
-TEMA ASIGNADO: "${topic}"
+TEMA: "${topic}"
 
 INSTRUCCIONES:
-- Escribe contenido EDUCATIVO y ORIGINAL sobre este tema
-- NO cites fuentes externas, periodicos, ni medios de comunicacion
-- NO menciones eventos especificos de fechas concretas
-- Usa conocimiento general sobre economia y finanzas
-- El tono debe ser didactico y accesible para el publico general
-- Da ejemplos practicos y consejos utiles
-- No hagas referencia a "segun expertos" o "estudios recientes"
+- Contenido EDUCATIVO y ORIGINAL
+- NO cites fuentes externas ni eventos de fechas concretas
+- Tono didactico y accesible
+- Ejemplos practicos y consejos utiles
+- No menciones "segun expertos" o "estudios recientes"
 
-Genera el articulo en formato JSON.
-ESTRUCTURA:
+ESTRUCTURA (body_html):
+${selectedEdu}
+
+USA TUS PROPIOS H2 segun el flujo.
+
+JSON:
 {
-  "title": "string (max 70 chars, sobre el tema asignado)",
+  "title": "string (max 70 chars)",
   "excerpt": "string (2-3 oraciones, 130-200 chars)",
   "body_html": "string (articulo en HTML, 400-700 palabras)",
   "analysis_text": "string (3-4 oraciones de resumen educativo)",
-  "impact_text": "string (aplicacion practica para el lector, 2-3 oraciones)",
-  "tags": "string[] (3-6 tags relevantes al tema)",
+  "impact_text": "string (aplicacion practica, 2-3 oraciones)",
+  "tags": "string[] (3-6 tags)",
   "seo_title": "string (max 60 chars)",
   "seo_description": "string (max 160 chars)",
   "read_time_minutes": "number (4-8)",
-  "featured_image_query": "string (busqueda corta para imagen de portada relacionada al tema, ej: 'ahorros finanzas personales peru')"
-}
-
-ESTRUCTURA (body_html):
-- <h2>Introduccion</h2>
-- 2-3 secciones con <h2> desarrollando el tema
-- <h2>Conclusion</h2>
-- SI es lista: usa <ul><li>...</li></ul>
-- SI es paso a paso: usa <ol><li>...</li></ol>`;
+  "featured_image_query": "string (busqueda corta para imagen de portada)"
+}`;
 }
 
 export async function generateArticle(openai, type, data) {
@@ -200,7 +209,7 @@ export async function generateArticle(openai, type, data) {
       { role: 'user', content: userPrompt },
     ],
     response_format: { type: 'json_object' },
-    temperature: 0.7,
+    temperature: 0.9,
     max_tokens: 4096,
   });
 
