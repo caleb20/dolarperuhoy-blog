@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 const FEATURED_IMAGES = [
   { url: 'https://images.pexels.com/photos/5849579/pexels-photo-5849579.jpeg', keywords: ['dolar', 'dollar', 'billete', 'money', 'divisa', 'tipo de cambio'] },
   { url: 'https://images.pexels.com/photos/730551/pexels-photo-730551.jpeg', keywords: ['dolar', 'dollar', 'usd', 'billete', 'currency'] },
@@ -65,11 +63,11 @@ function generateSlug(article, type) {
     case 'midweek':
       return `pulso-dolar-media-semana-${dateStr}`;
     case 'educational': {
-      const hash = createHash('md5').update(article.title).digest('hex').slice(0, 8);
-      return `educacion-financiera-${slugify(article.title).slice(0, 50)}-${hash}`;
+      const base = slugify(article.title).replace(/-+$/, '').slice(0, 60).replace(/-+$/, '');
+      return `educacion-financiera-${base}`;
     }
     default:
-      return `articulo-${dateStr}-${slugify(article.title).slice(0, 30)}`;
+      return `articulo-${dateStr}-${slugify(article.title).replace(/-+$/, '').slice(0, 40).replace(/-+$/, '')}`;
   }
 }
 
