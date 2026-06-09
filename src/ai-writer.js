@@ -115,6 +115,96 @@ JSON:
 }`;
 }
 
+function buildComparativaPrompt(data) {
+  const COMP_STRUCTURES = [
+    'Empieza con un resumen de las mejores tasas del dia, compara las 5 casas mas destacadas, muestra tabla de diferenciales, y cierra con recomendacion',
+    'Abre con el spread promedio del mercado, luego desglosa por tipo de casa (online vs fisica), compara las mejores opciones, y finaliza con consejo',
+    'Organiza por categorias: primero las casas online, luego las fisicas, destaca las diferencias de spread, y termina con cual conviene segun el monto',
+  ];
+  const selected = COMP_STRUCTURES[Math.floor(Math.random() * COMP_STRUCTURES.length)];
+
+  return `Fecha actual: ${getDayContext()}
+
+Escribe una COMPARATIVA DE TASAS de cambio en Peru.
+
+DATOS RECIENTES DEL MERCADO:
+${JSON.stringify((data.snapshots || []).slice(0, 5), null, 2)}
+
+CASAS DE CAMBIO (tasas actuales):
+${JSON.stringify((data.houses || []).slice(0, 15), null, 2)}
+
+ESTRUCTURA (body_html):
+${selected}
+
+USA TUS PROPIOS H2 segun el flujo.
+
+JSON:
+{
+  "title": "string (max 70 chars, ej: 'Comparativa: Mejores Tasas de Cambio [fecha]')",
+  "excerpt": "string (2-3 oraciones, 130-200 chars)",
+  "body_html": "string (articulo en HTML, 350-600 palabras)",
+  "analysis_text": "string (3-4 oraciones destacando la mejor opcion)",
+  "impact_text": "string (ahorro potencial al elegir bien, 2-3 oraciones)",
+  "tags": "string[] (3-6 tags, ej: comparativa, tasas, casas de cambio)",
+  "seo_title": "string (max 60 chars)",
+  "seo_description": "string (max 160 chars)",
+  "read_time_minutes": "number (3-5)",
+  "featured_image_query": "string (busqueda corta para imagen de portada)"
+}`;
+}
+
+function buildGuiaPrompt() {
+  const GUIAS = [
+    "Como comprar dolares en Peru: guia paso a paso",
+    "Como vender dolares en Peru obteniendo la mejor tasa",
+    "Comparativa: casas de cambio online vs casas fisicas en Lima",
+    "Guia para enviar y recibir remesas desde el extranjero",
+    "Como afecta el riesgo pais al tipo de cambio peruano",
+    "Que bancos ofrecen el mejor tipo de cambio en Peru",
+    "Estrategias para cambiar dolares antes de viajar al extranjero",
+    "Como funciona el mercado paralelo de dolares en Peru",
+  ];
+  const topic = GUIAS[Math.floor(Math.random() * GUIAS.length)];
+  const GUIAS_STRUCTURES = [
+    'Abre con el objetivo de la guia, lista los pasos o requisitos, desarrolla cada paso en detalle, y cierra con resumen y recomendacion',
+    'Empieza con la pregunta principal, da opciones comparadas, muestra ejemplos practicos, termina con una recomendacion clara',
+    'Organiza como tutorial: primero los preparativos, luego el proceso paso a paso, finalmente tips y errores a evitar',
+  ];
+  const selected = GUIAS_STRUCTURES[Math.floor(Math.random() * GUIAS_STRUCTURES.length)];
+
+  return `Fecha actual: ${getDayContext()}
+
+Escribe una GUIA PRACTICA sobre el dolar en Peru.
+
+TEMA: "${topic}"
+
+INSTRUCCIONES:
+- Contenido 100% ORIGINAL y PRACTICO
+- NO cites fuentes externas ni eventos de fechas concretas
+- Tono directo y util
+- Incluye ejemplos con montos realistas
+- Enfasis en el ahorro y la mejor decision
+
+ESTRUCTURA:
+${selected}
+
+USA TUS PROPIOS H2 segun el flujo del contenido.
+
+JSON:
+{
+  "title": "string (max 70 chars)",
+  "excerpt": "string (2-3 oraciones, 130-200 chars)",
+  "body_html": "string (articulo en HTML, 400-700 palabras)",
+  "analysis_text": "string (3-4 oraciones resumiendo los puntos clave)",
+  "impact_text": "string (beneficio practico para el lector, 2-3 oraciones)",
+  "tags": "string[] (3-6 tags)",
+  "seo_title": "string (max 60 chars)",
+  "seo_description": "string (max 160 chars)",
+  "read_time_minutes": "number (4-7)",
+  "featured_image_query": "string (busqueda corta para imagen de portada)"
+}`;
+}
+
 const EDUCATIONAL_TOPICS = [
   "Que es el spread cambiario y por que deberia importarte",
   "5 errores comunes al cambiar dolares en Peru",
@@ -131,6 +221,16 @@ const EDUCATIONAL_TOPICS = [
   "Estrategias de ahorro en dolares para peruanos",
   "Entendiendo la dolarizacion parcial de la economia peruana",
   "Impuestos y comisiones al cambiar dolares en Peru: lo que debes saber",
+  "Inflacion en Peru: como afecta el valor de tus ahorros en soles",
+  "Que es el indice de tipo de cambio real y por que importa",
+  "CTS 2026: cuanto puedes retirar y a que tipo de cambio conviene",
+  "Como negociar una mejor tasa de cambio en una casa de cambio",
+  "ETF en dolares: una opcion de inversion para peruanos",
+  "El impacto de las elecciones en el tipo de cambio peruano",
+  "Dolarizar tu portafolio: cuanto y cuando hacerlo",
+  "Criptomonedas vs dolar: cual es mejor refugio en Peru",
+  "Entendiendo las reservas internacionales y su efecto en el dolar",
+  "Prestamos en dolares vs soles: cual te conviene mas en 2026",
 ];
 
 function getRandomTopic() {
@@ -193,6 +293,15 @@ export async function generateArticle(openai, type, data) {
       if (!data) throw new Error('Se requieren datos para analisis de media semana');
       system += '\n\nRecibiras datos recientes del tipo de cambio. Tu analisis debe basarse en ellos.';
       userPrompt = buildMidweekPrompt(data);
+      break;
+    case 'comparativa':
+      if (!data) throw new Error('Se requieren datos para comparativa');
+      system += '\n\nRecibiras datos actuales del mercado. Tu comparativa debe basarse UNICAMENTE en ellos.';
+      userPrompt = buildComparativaPrompt(data);
+      break;
+    case 'guia':
+      system += '\n\nEscribes una GUIA PRACTICA basada en conocimiento general. NO citas fuentes externas.';
+      userPrompt = buildGuiaPrompt();
       break;
     case 'educational':
       system += '\n\nEscribes contenido EDUCATIVO basado en conocimiento general de economia y finanzas. NO citas fuentes externas.';

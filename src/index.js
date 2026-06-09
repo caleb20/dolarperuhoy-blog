@@ -12,7 +12,9 @@ function getArticleType() {
   const day = new Date().toLocaleDateString('en-US', { weekday: 'long', timeZone: 'America/Lima' });
   switch (day) {
     case 'Monday': return 'weekly';
+    case 'Tuesday': return 'comparativa';
     case 'Wednesday': return 'midweek';
+    case 'Thursday': return 'guia';
     case 'Friday': return 'educational';
     default: return null;
   }
@@ -21,6 +23,8 @@ function getArticleType() {
 const TYPE_LABELS = {
   weekly: 'Analisis Semanal',
   midweek: 'Pulso de Media Semana',
+  comparativa: 'Comparativa de Tasas',
+  guia: 'Guia Practica',
   educational: 'Articulo Educativo',
 };
 
@@ -28,7 +32,7 @@ async function main() {
   const articleType = getArticleType();
 
   if (!articleType) {
-    console.log(`[blog] Hoy no es dia de publicacion. Semanal: Lun, Media Semana: Mie, Educativo: Vie.`);
+    console.log(`[blog] Hoy no es dia de publicacion (solo Lun-Vie).`);
     process.exit(0);
   }
 
@@ -46,10 +50,10 @@ async function main() {
     }
     console.log(`[blog] Datos: ${exchangeData.sunat.length} SUNAT, ${exchangeData.snapshots.length} snapshots, ${exchangeData.houses.length} casas`);
     console.log(`[blog] Variacion: ${exchangeData.variationText || 'N/A'}`);
-  } else if (articleType === 'midweek') {
+  } else if (articleType === 'midweek' || articleType === 'comparativa') {
     exchangeData = await getMidweekExchangeData(supabase);
     if (!exchangeData) {
-      console.error('[blog] No hay datos para pulso de media semana. Abortando.');
+      console.error(`[blog] No hay datos para ${articleType}. Abortando.`);
       process.exit(1);
     }
     console.log(`[blog] Datos: ${exchangeData.snapshots.length} snapshots recientes, ${exchangeData.houses.length} casas`);
