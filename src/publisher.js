@@ -1,35 +1,51 @@
 const FEATURED_IMAGES = [
-  { url: 'https://images.pexels.com/photos/5849579/pexels-photo-5849579.jpeg', keywords: ['dolar', 'dollar', 'billete', 'money', 'divisa', 'tipo de cambio'] },
-  { url: 'https://images.pexels.com/photos/730551/pexels-photo-730551.jpeg', keywords: ['dolar', 'dollar', 'usd', 'billete', 'currency'] },
-  { url: 'https://images.pexels.com/photos/4386371/pexels-photo-4386371.jpeg', keywords: ['cambio', 'exchange', 'casa de cambio', 'divisas', 'currency exchange'] },
-  { url: 'https://images.pexels.com/photos/210607/pexels-photo-210607.jpeg', keywords: ['mercado', 'market', 'finanzas', 'finance', 'economia', 'economy'] },
-  { url: 'https://images.pexels.com/photos/669453/pexels-photo-669453.jpeg', keywords: ['ahorro', 'savings', 'finanzas personales', 'personal finance', 'inversion'] },
-  { url: 'https://images.pexels.com/photos/534216/pexels-photo-534216.jpeg', keywords: ['dolar', 'euro', 'billetes', 'banknotes', 'moneda', 'currency'] },
-  { url: 'https://images.pexels.com/photos/164527/pexels-photo-164527.jpeg', keywords: ['calculadora', 'calculator', 'numeros', 'numbers', 'cuentas', 'finanzas'] },
-  { url: 'https://images.pexels.com/photos/259209/pexels-photo-259209.jpeg', keywords: ['inversion', 'investment', 'crecimiento', 'growth', 'grafico', 'chart'] },
-  { url: 'https://images.pexels.com/photos/2988232/pexels-photo-2988232.jpeg', keywords: ['banco', 'bank', 'edificio', 'building', 'financiero', 'financial'] },
-  { url: 'https://images.pexels.com/photos/6863204/pexels-photo-6863204.jpeg', keywords: ['transferencia', 'transfer', 'remesa', 'remittance', 'envio', 'money transfer'] },
-  { url: 'https://images.pexels.com/photos/7567443/pexels-photo-7567443.jpeg', keywords: ['peru', 'lima', 'viajes', 'travel', 'turismo', 'sudamerica'] },
-  { url: 'https://images.pexels.com/photos/3943717/pexels-photo-3943717.jpeg', keywords: ['ahorro', 'alcancia', 'piggy bank', 'finanzas personales', 'educacion financiera'] },
-  { url: 'https://images.pexels.com/photos/6802048/pexels-photo-6802048.jpeg', keywords: ['inflacion', 'inflation', 'economia', 'precios', 'prices'] },
-  { url: 'https://images.pexels.com/photos/6863515/pexels-photo-6863515.jpeg', keywords: ['comercio', 'trade', 'exportacion', 'export', 'importacion', 'import'] },
-  { url: 'https://images.pexels.com/photos/7412073/pexels-photo-7412073.jpeg', keywords: ['presupuesto', 'budget', 'planificacion', 'planning', 'finanzas'] },
+  { url: 'https://images.pexels.com/photos/4386476/pexels-photo-4386476.jpeg', keywords: ['dolar', 'billete', 'rollo', 'banknotes', 'currency'] },
+  { url: 'https://images.pexels.com/photos/3483098/pexels-photo-3483098.jpeg', keywords: ['dolar', 'cien', 'billetes', 'pila', 'dinero'] },
+  { url: 'https://images.pexels.com/photos/928188/pexels-photo-928188.jpeg', keywords: ['dolar', 'persona', 'sosteniendo', 'billete', 'mano'] },
+  { url: 'https://images.pexels.com/photos/4386473/pexels-photo-4386473.jpeg', keywords: ['dinero', 'monton', 'billetes', 'efectivo', 'cash'] },
+  { url: 'https://images.pexels.com/photos/5980800/pexels-photo-5980800.jpeg', keywords: ['dolar', 'laptop', 'tecnologia', 'finanzas', 'negocios'] },
+  { url: 'https://images.pexels.com/photos/5980879/pexels-photo-5980879.jpeg', keywords: ['carrito', 'compras', 'monedas', 'billetes', 'comercio'] },
+  { url: 'https://images.pexels.com/photos/4386154/pexels-photo-4386154.jpeg', keywords: ['billetera', 'wallet', 'dolar', 'cuero', 'dinero'] },
+  { url: 'https://images.pexels.com/photos/7111480/pexels-photo-7111480.jpeg', keywords: ['dolar', 'billetes', 'closeup', 'fraude', 'finanzas'] },
+  { url: 'https://images.pexels.com/photos/5980864/pexels-photo-5980864.jpeg', keywords: ['bitcoin', 'criptomoneda', 'dolar', 'inversion', 'crypto'] },
+  { url: 'https://images.pexels.com/photos/7680637/pexels-photo-7680637.jpeg', keywords: ['mujer', 'feliz', 'dinero', 'ahorro', 'finanzas personales'] },
+  { url: 'https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg', keywords: ['bitcoin', 'dolar', 'billetes', 'criptomoneda', 'moneda digital'] },
+  { url: 'https://images.pexels.com/photos/4061022/pexels-photo-4061022.jpeg', keywords: ['euro', 'billetes', 'europa', 'divisa', 'currency'] },
+  { url: 'https://images.pexels.com/photos/7567550/pexels-photo-7567550.jpeg', keywords: ['dolar', 'tablet', 'grafico', 'analisis', 'inversion'] },
+  { url: 'https://images.pexels.com/photos/7076318/pexels-photo-7076318.jpeg', keywords: ['dolar', 'billete', 'macro', 'pirámide', 'ojo'] },
+  { url: 'https://images.pexels.com/photos/7735777/pexels-photo-7735777.jpeg', keywords: ['pareja', 'finanzas', 'presupuesto', 'dinero', 'hogar'] },
+  { url: 'https://images.pexels.com/photos/8369770/pexels-photo-8369770.jpeg', keywords: ['criptomoneda', 'monedas', 'oro', 'inversion', 'crypto'] },
+  { url: 'https://images.pexels.com/photos/4386328/pexels-photo-4386328.jpeg', keywords: ['calculadora', 'calcular', 'finanzas', 'numeros', 'presupuesto'] },
+  { url: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg', keywords: ['contar', 'dinero', 'billetes', 'manos', 'efectivo'] },
+  { url: 'https://images.pexels.com/photos/210600/pexels-photo-210600.jpeg', keywords: ['monedas', 'euro', 'economia', 'ahorro', 'inversion'] },
+  { url: 'https://images.pexels.com/photos/3943719/pexels-photo-3943719.jpeg', keywords: ['monedas', 'variadas', 'divisa', 'coleccion', 'finanzas'] },
+  { url: 'https://images.pexels.com/photos/5632397/pexels-photo-5632397.jpeg', keywords: ['carrito', 'compras', 'laptop', 'ecommerce', 'online'] },
+  { url: 'https://images.pexels.com/photos/3861957/pexels-photo-3861957.jpeg', keywords: ['grafico', 'laptop', 'analisis', 'datos', 'negocios'] },
+  { url: 'https://images.pexels.com/photos/4386366/pexels-photo-4386366.jpeg', keywords: ['calculadora', 'dolar', 'notas', 'presupuesto', 'planificacion'] },
+  { url: 'https://images.pexels.com/photos/259200/pexels-photo-259200.jpeg', keywords: ['tarjeta', 'credito', 'visa', 'mastercard', 'pago'] },
+  { url: 'https://images.pexels.com/photos/164501/pexels-photo-164501.jpeg', keywords: ['tarjetas', 'credito', 'plastic', 'oro', 'financiero'] },
+  { url: 'https://images.pexels.com/photos/730553/pexels-photo-730553.jpeg', keywords: ['bitcoin', 'crypto', 'intercambio', 'divisa', 'digital'] },
+  { url: 'https://images.pexels.com/photos/4968631/pexels-photo-4968631.jpeg', keywords: ['contar', 'dinero', 'calculadora', 'gastos', 'ahorro'] },
+  { url: 'https://images.pexels.com/photos/6694576/pexels-photo-6694576.jpeg', keywords: ['apreton', 'manos', 'acuerdo', 'negocio', 'transaccion'] },
+  { url: 'https://images.pexels.com/photos/6694560/pexels-photo-6694560.jpeg', keywords: ['datos', 'analisis', 'reporte', 'negocios', 'finanzas'] },
+  { url: 'https://images.pexels.com/photos/4386465/pexels-photo-4386465.jpeg', keywords: ['dolar', 'billetes', 'marmol', 'riqueza', 'divisa'] },
 ];
 
-async function pickImage(query) {
+export async function pickImage(query) {
   if (!query) return FEATURED_IMAGES[0].url;
 
   const apiKey = process.env.PEXELS_API_KEY;
   if (apiKey) {
     try {
       const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=3&orientation=landscape`,
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=20&orientation=landscape`,
         { headers: { Authorization: apiKey } },
       );
       if (res.ok) {
         const data = await res.json();
         if (data.photos?.length > 0) {
-          return data.photos[0].src.large;
+          const randomIndex = Math.floor(Math.random() * data.photos.length);
+          return data.photos[randomIndex].src.large;
         }
       }
     } catch {
@@ -39,7 +55,7 @@ async function pickImage(query) {
 
   const q = query.toLowerCase();
   let bestScore = 0;
-  let bestImage = FEATURED_IMAGES[0].url;
+  const candidates = [];
 
   for (const img of FEATURED_IMAGES) {
     let score = 0;
@@ -49,11 +65,16 @@ async function pickImage(query) {
     }
     if (score > bestScore) {
       bestScore = score;
-      bestImage = img.url;
+      candidates.length = 0;
+      candidates.push(img.url);
+    } else if (score > 0 && score === bestScore) {
+      candidates.push(img.url);
     }
   }
 
-  return bestImage;
+  return candidates.length > 0
+    ? candidates[Math.floor(Math.random() * candidates.length)]
+    : FEATURED_IMAGES[Math.floor(Math.random() * FEATURED_IMAGES.length)];
 }
 
 function slugify(text) {
