@@ -31,11 +31,26 @@ const FEATURED_IMAGES = [
   { url: 'https://images.pexels.com/photos/4386465/pexels-photo-4386465.jpeg', keywords: ['dolar', 'billetes', 'marmol', 'riqueza', 'divisa'] },
 ];
 
+async function validateImageUrl(url) {
+  try {
+    const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+    if (!res.ok) console.warn(`[validate] Imagen no accesible: ${url.split('/').pop()} (HTTP ${res.status})`);
+    return res.ok;
+  } catch {
+    console.warn(`[validate] Error al verificar imagen: ${url.split('/').pop()}`);
+    return false;
+  }
+}
+
 export async function pickImage(query) {
-  if (!query) return FEATURED_IMAGES[0].url;
+  if (!query) {
+    console.warn('[pickImage] Sin query, usando imagen por defecto');
+    return FEATURED_IMAGES[0].url;
+  }
 
   const apiKey = process.env.PEXELS_API_KEY;
   if (apiKey) {
+    console.log(`[pexels] Buscando imagenes para: "${query}"`);
     try {
       const res = await fetch(
         `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=20&orientation=landscape`,
@@ -45,12 +60,20 @@ export async function pickImage(query) {
         const data = await res.json();
         if (data.photos?.length > 0) {
           const randomIndex = Math.floor(Math.random() * data.photos.length);
-          return data.photos[randomIndex].src.large;
+          const url = data.photos[randomIndex].src.large;
+          console.log(`[pexels] Imagen seleccionada: ${query} -> ${url.split('/').pop()}`);
+          return url;
+        } else {
+          console.warn(`[pexels] Sin resultados para: ${query}`);
         }
+      } else {
+        console.warn(`[pexels] HTTP ${res.status}: ${res.statusText} para query: ${query}`);
       }
-    } catch {
-      // fallback
+    } catch (err) {
+      console.error(`[pexels] Error en API: ${err.message}`);
     }
+  } else {
+    console.log('[pexels] API key no configurada, usando imagenes de respaldo');
   }
 
   const q = query.toLowerCase();
@@ -72,9 +95,21 @@ export async function pickImage(query) {
     }
   }
 
-  return candidates.length > 0
-    ? candidates[Math.floor(Math.random() * candidates.length)]
-    : FEATURED_IMAGES[Math.floor(Math.random() * FEATURED_IMAGES.length)];
+  const pool = candidates.length > 0
+    ? candidates
+    : FEATURED_IMAGES.map(i => i.url);
+
+  const shuffled = pool.sort(() => Math.random() - 0.5);
+
+  for (const url of shuffled) {
+    if (await validateImageUrl(url)) {
+      console.log(`[fallback] Imagen seleccionada para "${query}": ${url.split('/').pop()}`);
+      return url;
+    }
+  }
+
+  console.warn(`[fallback] Ninguna imagen valida disponible, usando primera del array`);
+  return FEATURED_IMAGES[0].url;
 }
 
 function slugify(text) {
