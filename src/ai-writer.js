@@ -1,6 +1,8 @@
 import OpenAI from 'openai';
 
 const MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+const DEFAULT_MAX_ATTEMPTS = Number.parseInt(process.env.OPENAI_MAX_ATTEMPTS || '3', 10);
+const DEFAULT_RETRY_DELAY_MS = Number.parseInt(process.env.OPENAI_RETRY_DELAY_MS || '2000', 10);
 
 const BASE_SYSTEM = `Eres un analista economico especializado en el mercado cambiario peruano (USD/PEN).
 Escribes contenido ORIGINAL para DolarPeruHoy.pe.
@@ -279,7 +281,30 @@ JSON:
 }`;
 }
 
-export async function generateArticle(openai, type, data) {
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function shouldRetryOpenAIError(error) {
+  const status = error?.status ?? error?.response?.status;
+  if (status === 408 || status === 409 || status === 429 || status >= 500) {
+    return true;
+  }
+
+  const message = error?.message?.toLowerCase() || '';
+  return [
+    'premature close',
+    'fetch failed',
+    'network',
+    'socket hang up',
+    'timeout',
+    'timed out',
+    'econnreset',
+    'connection',
+  ].some((token) => message.includes(token));
+}
+
+export async function generateArticle(openai, type, data, options = {}) {
   let system = BASE_SYSTEM;
   let userPrompt;
 
@@ -311,28 +336,46 @@ export async function generateArticle(openai, type, data) {
       throw new Error(`Tipo desconocido: ${type}`);
   }
 
-  const response = await openai.chat.completions.create({
-    model: MODEL,
-    messages: [
-      { role: 'system', content: system },
-      { role: 'user', content: userPrompt },
-    ],
-    response_format: { type: 'json_object' },
-    temperature: 0.9,
-    max_tokens: 4096,
-  });
+  const maxAttempts = Math.max(1, Number.parseInt(String(options.maxAttempts ?? DEFAULT_MAX_ATTEMPTS), 10) || 1);
+  const retryDelayMs = Math.max(0, Number.parseInt(String(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS), 10) || 0);
 
-  const content = response.choices[0]?.message?.content;
-  if (!content) throw new Error('OpenAI no devolvio contenido');
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await openai.chat.completions.create({
+        model: MODEL,
+        messages: [
+          { role: 'system', content: system },
+          { role: 'user', content: userPrompt },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.9,
+        max_tokens: 4096,
+      });
 
-  const article = JSON.parse(content);
+      const content = response.choices[0]?.message?.content;
+      if (!content) throw new Error('OpenAI no devolvio contenido');
 
-  if (!article.title || !article.body_html || !article.excerpt) {
-    throw new Error('Respuesta incompleta: falta title/body_html/excerpt');
+      const article = JSON.parse(content);
+
+      if (!article.title || !article.body_html || !article.excerpt) {
+        throw new Error('Respuesta incompleta: falta title/body_html/excerpt');
+      }
+
+      article._type = type;
+      article._topic = type === 'educational' ? userPrompt.match(/TEMA ASIGNADO: "(.+)"/)?.[1] : null;
+
+      return article;
+    } catch (error) {
+      const canRetry = shouldRetryOpenAIError(error);
+      if (!canRetry || attempt === maxAttempts) {
+        throw error;
+      }
+
+      const delayMs = retryDelayMs * attempt;
+      console.warn(
+        `[ai-writer] Error temporal al generar articulo (intento ${attempt}/${maxAttempts}): ${error.message}. Reintentando en ${delayMs}ms...`,
+      );
+      await wait(delayMs);
+    }
   }
-
-  article._type = type;
-  article._topic = type === 'educational' ? userPrompt.match(/TEMA ASIGNADO: "(.+)"/)?.[1] : null;
-
-  return article;
 }
