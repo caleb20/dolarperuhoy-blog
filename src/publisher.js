@@ -138,13 +138,9 @@ function generateSlug(article, type) {
       return `pulso-dolar-media-semana-${dateStr}`;
     case 'comparativa':
       return `comparativa-tasas-cambio-${dateStr}`;
-    case 'guia': {
+    case 'news': {
       const base = slugify(article.title).replace(/-+$/, '');
-      return `guia-practica-${base}`;
-    }
-    case 'educational': {
-      const base = slugify(article.title).replace(/-+$/, '');
-      return `educacion-financiera-${base}`;
+      return `actualidad-${base}-${dateStr}`;
     }
     default:
       return `articulo-${dateStr}-${slugify(article.title).replace(/-+$/, '').replace(/-+$/, '')}`;
@@ -174,8 +170,7 @@ function getCategoryForType(type) {
     case 'weekly': return 'analisis';
     case 'midweek': return 'analisis';
     case 'comparativa': return 'comparativas';
-    case 'guia': return 'guias';
-    case 'educational': return 'educacion';
+    case 'news': return 'noticias';
     default: return 'analisis';
   }
 }
@@ -185,8 +180,7 @@ function getAuthorForType(type) {
     case 'weekly': return 'Equipo de Analisis DolarPeruHoy';
     case 'midweek': return 'Equipo de Monitoreo DolarPeruHoy';
     case 'comparativa': return 'Equipo de Analisis DolarPeruHoy';
-    case 'guia': return 'Equipo Editorial DolarPeruHoy';
-    case 'educational': return 'Equipo Editorial DolarPeruHoy';
+    case 'news': return 'Equipo de Actualidad DolarPeruHoy';
     default: return 'DolarPeruHoy';
   }
 }

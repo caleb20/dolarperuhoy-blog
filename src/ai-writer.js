@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 
-const MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+const MODEL = process.env.OPENAI_MODEL || 'gpt-5.4-mini';
 const DEFAULT_MAX_ATTEMPTS = Number.parseInt(process.env.OPENAI_MAX_ATTEMPTS || '3', 10);
 const DEFAULT_RETRY_DELAY_MS = Number.parseInt(process.env.OPENAI_RETRY_DELAY_MS || '2000', 10);
 
@@ -281,6 +281,55 @@ JSON:
 }`;
 }
 
+function buildNewsPrompt(newsContext, data) {
+  const NEWS_STRUCTURES = [
+    'Empieza con el evento mas relevante de la semana, explica su impacto en el tipo de cambio, relaciona con la situacion economica actual, y cierra con perspectiva para las proximas semanas',
+    'Abre con el contexto politico/economico reciente, analiza como afecta al dolar, compara con semanas anteriores, y termina con recomendaciones practicas',
+    'Organiza por temas: primero las noticias politicas, luego las economicas, su impacto en el tipo de cambio, y finalmente que esperar en el corto plazo',
+  ];
+  const selected = NEWS_STRUCTURES[Math.floor(Math.random() * NEWS_STRUCTURES.length)];
+
+  return `Fecha actual: ${getDayContext()}
+
+Escribe un ARTICULO DE ACTUALIDAD sobre el dolar en Peru basado en NOTICIAS RECIENTES.
+
+CONTEXTO DE NOTICIAS ACTUALES (basado en busqueda web):
+${newsContext}
+
+${data?.snapshots ? `DATOS DEL TIPO DE CAMBIO RECIENTES:
+${JSON.stringify(data.snapshots.slice(0, 5), null, 2)}` : ''}
+
+${data?.houses ? `CASAS DE CAMBIO (tasas actuales):
+${JSON.stringify(data.houses.slice(0, 5), null, 2)}` : ''}
+
+INSTRUCCIONES:
+- Basate en las noticias reales proporcionadas arriba
+- No inventes eventos ni fechas
+- Relaciona las noticias con el tipo de cambio USD/PEN
+- Incluye datos concretos de las noticias (fechas, cifras)
+- Tono analitico pero accesible
+- Enfasis en como afecta al lector peruano
+
+ESTRUCTURA (body_html):
+${selected}
+
+USA TUS PROPIOS H2 segun el flujo del contenido.
+
+JSON:
+{
+  "title": "string (max 70 chars, ej: 'Impacto de [evento] en el dolar: analisis [fecha]')",
+  "excerpt": "string (2-3 oraciones, 130-200 chars)",
+  "body_html": "string (articulo en HTML, 400-700 palabras)",
+  "analysis_text": "string (3-4 oraciones destacando los puntos clave)",
+  "impact_text": "string (impacto para el lector peruano, 2-3 oraciones)",
+  "tags": "string[] (3-6 tags, incluir al menos 2 relacionados a las noticias)",
+  "seo_title": "string (max 60 chars)",
+  "seo_description": "string (max 160 chars)",
+  "read_time_minutes": "number (3-6)",
+  "featured_image_query": "string (busqueda corta para imagen de portada)"
+}`;
+}
+
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -331,6 +380,11 @@ export async function generateArticle(openai, type, data, options = {}) {
     case 'educational':
       system += '\n\nEscribes contenido EDUCATIVO basado en conocimiento general de economia y finanzas. NO citas fuentes externas.';
       userPrompt = buildEducationalPrompt();
+      break;
+    case 'news':
+      if (!options.newsContext) throw new Error('Se requiere contexto de noticias');
+      system += '\n\nRecibiste noticias reales de eventos recientes. Tu analisis debe basarse ESTRICTAMENTE en ellas. No inventes nada. Cita los eventos con sus fechas reales.';
+      userPrompt = buildNewsPrompt(options.newsContext, data);
       break;
     default:
       throw new Error(`Tipo desconocido: ${type}`);

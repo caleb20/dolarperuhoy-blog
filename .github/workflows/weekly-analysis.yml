@@ -5,8 +5,8 @@ on:
     - cron: "0 14 * * 1"   # Lun 09:00 Peru — Analisis Semanal
     - cron: "0 14 * * 2"   # Mar 09:00 Peru — Comparativa de Tasas
     - cron: "0 14 * * 3"   # Mie 09:00 Peru — Pulso Media Semana
-    - cron: "0 14 * * 4"   # Jue 09:00 Peru — Guia Practica
-    - cron: "0 14 * * 5"   # Vie 09:00 Peru — Articulo Educativo
+    - cron: "0 14 * * 4"   # Jue 09:00 Peru — Analisis de Actualidad
+    - cron: "0 14 * * 5"   # Vie 09:00 Peru — Analisis de Actualidad
   workflow_dispatch:
 
 jobs:
@@ -23,4 +23,4 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_MODEL: gpt-4.1-mini
+          OPENAI_MODEL: gpt-5.4-mini

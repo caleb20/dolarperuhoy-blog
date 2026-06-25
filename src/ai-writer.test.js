@@ -67,3 +67,29 @@ test('generateArticle does not retry non-transient OpenAI failures', async () =>
 
   assert.equal(openai.callCount, 1);
 });
+
+test('generateArticle with news type requires newsContext', async () => {
+  const articleData = {
+    title: 'Noticia de prueba',
+    excerpt: 'Resumen de prueba.',
+    body_html: '<p>Contenido de prueba.</p>',
+  };
+  const openai = createOpenAIStub([articleData]);
+
+  const article = await generateArticle(openai, 'news', null, {
+    newsContext: 'Contexto de noticias de prueba',
+    maxAttempts: 1,
+  });
+
+  assert.equal(article.title, 'Noticia de prueba');
+  assert.equal(openai.callCount, 1);
+});
+
+test('generateArticle with news type throws without context', async () => {
+  const openai = createOpenAIStub([]);
+
+  await assert.rejects(
+    generateArticle(openai, 'news', null, { maxAttempts: 1 }),
+    /Se requiere contexto de noticias/,
+  );
+});
