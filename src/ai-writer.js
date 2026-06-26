@@ -403,7 +403,7 @@ export async function generateArticle(openai, type, data, options = {}) {
         ],
         response_format: { type: 'json_object' },
         temperature: 0.9,
-        max_tokens: 4096,
+        max_completion_tokens: 4096,
       });
 
       const content = response.choices[0]?.message?.content;
