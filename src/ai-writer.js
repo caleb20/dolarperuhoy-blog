@@ -1,8 +1,13 @@
 import OpenAI from 'openai';
 
-const MODEL = process.env.OPENAI_MODEL || 'gpt-5.4-mini';
+const FULL_MODEL = process.env.OPENAI_MODEL || 'gpt-5.4-mini';
+const CHEAP_MODEL = 'gpt-4.1-mini';
 const DEFAULT_MAX_ATTEMPTS = Number.parseInt(process.env.OPENAI_MAX_ATTEMPTS || '3', 10);
 const DEFAULT_RETRY_DELAY_MS = Number.parseInt(process.env.OPENAI_RETRY_DELAY_MS || '2000', 10);
+
+function modelForType(type) {
+  return type === 'news' ? FULL_MODEL : CHEAP_MODEL;
+}
 
 const BASE_SYSTEM = `Eres un analista economico y redactor SEO especializado en el mercado cambiario peruano (USD/PEN).
 Escribes contenido ORIGINAL para DolarPeruHoy.pe.
@@ -215,7 +220,7 @@ JSON:
 }
 
 const EDUCATIONAL_TOPICS = [
-  // --- Siempre verdes ---
+  // --- Siempre verdes (indefinido) ---
   "Que es el spread cambiario y por que deberia importarte",
   "5 errores comunes al cambiar dolares en Peru",
   "Casas de cambio online vs bancos: cual te conviene mas",
@@ -239,59 +244,82 @@ const EDUCATIONAL_TOPICS = [
   "Criptomonedas vs dolar: cual es mejor refugio en Peru",
   "Entendiendo las reservas internacionales y su efecto en el dolar",
   "Prestamos en dolares vs soles: cual te conviene mas en 2026",
-  // --- Estacionales: Enero - Marzo ---
-  "CTS 2026: calendario de pagos, calculo y fechas clave en Peru",
-  "Declaracion de Renta 2025 SUNAT: cronograma, pasos y como hacerlo",
-  "Vacaciones utiles 2026: cuanto cuestan y como financiarlas sin endeudarse",
-  // --- Estacionales: Abril - Junio ---
-  "CTS mayo 2026: cuanto depositan, como calcular y hasta cuando retirar",
+  "Cuanto debes ganar para vivir bien en Peru en 2026",
+  "Presupuesto familiar: como distribuir tus ingresos mensuales",
+  "Ahorro e inversion: diferencias y cual empezar primero",
+  "Tarjetas de credito en Peru: cuotas sin intereses vs pago total",
+  // --- Estacionales: Enero - Febrero ---
+  "CTS 2026: calendario de pagos, fechas clave y como calcular el deposito",
+  "Declaracion de Renta 2025 SUNAT: cronograma paso a paso",
+  "Declaracion de Renta 2025: como declarar por primera vez ante SUNAT",
+  "Vacaciones utiles 2026: cuanto cuestan y como financiarlas",
+  "Impuestos a la renta Peru: todo lo que debes saber como trabajador",
+  "Sunat 2026: nuevas obligaciones fiscales para personas naturales",
+  // --- Estacionales: Marzo - Abril ---
+  "CTS 2026: fecha de deposito mayo, calcular monto y hasta cuando retirar",
   "CTS 2026: conviene retirar todo o dejarlo en el banco",
-  "Declaracion de Renta 2025: ultimos dias para declarar ante SUNAT",
-  "Inflacion y tipo de cambio: como afecta tu poder adquisitivo en Peru",
-  "Ahorrar en dolares: cuanto necesitas para empezar y donde hacerlo",
-  // --- Estacionales: Julio - Setiembre ---
-  "Gratificacion Julio 2026: cuanto te pagan, calculo y fechas de deposito",
-  "Gratificacion 2026: cuanto deposita tu empleador y como se calcula el monto",
+  "Declaracion de Renta 2025 SUNAT: ultimos dias y como declarar correcto",
+  "Inflacion en Peru 2026: como afecta tu economia diaria y ahorros",
+  "Tipo de cambio Abril 2026: tendencias y perspectivas del dolar en Peru",
+  "Casas de cambio en Lima vs online: cual opcion da mejor tasa",
+  // --- Estacionales: Mayo - Junio ---
+  "Gratificacion Julio 2026: fecha tope, calculo del monto y deposito",
+  "Gratificacion 2026: cuanto te deposita tu empleador y como se calcula",
+  "CTS mayo 2026: ya depositaron, cuanto retirar y que hacer con ese dinero",
+  "CTS y Gratificacion: diferencias, montos y cuales son tus derechos",
+  "Invertir tu gratificacion: opciones seguras y rentables en Peru",
+  "Tipo de cambio Junio 2026: tendencia del dolar antes de Fiestas Patrias",
+  "Prestamos en bancos peruanos: tasas de interes y cual elegir en 2026",
+  "Cuanto cuesta vivir en Lima 2026: presupuesto mensual actualizado",
+  // --- Estacionales: Julio - Agosto ---
   "Fiestas Patrias Peru 2026: cuanto gastaran los peruanos en julio",
-  "CTS vs Gratificacion: diferencias, montos y cuales son tus derechos",
-  "Presupuesto para Fiestas Patrias: como celebrar sin descuidar tus finanzas",
-  "Tipo de cambio julio 2026: tendencia del dolar en Fiestas Patrias",
+  "Presupuesto para Fiestas Patrias: celebrar sin descuidar tus finanzas",
+  "Tipo de cambio post Fiestas Patrias: tendencia del dolar en agosto",
   "Ahorro en soles vs dolares en Peru: que conviene mas en 2026",
-  // --- Estacionales: Octubre - Diciembre ---
-  "CTS noviembre 2026: fecha de deposito, calculo y todo lo que debes saber",
-  "Gratificacion Diciembre 2026: cuanto te pagan y como calcular el monto",
-  "Navidad 2026: cuanto gastaran los peruanos en regalos y celebraciones",
-  "Cierre de ano: como proteger tus ahorros de la volatilidad del dolar",
-  "ONP o AFP en 2026: cual te conviene mas segun tu sueldo",
+  "Gratificacion recibida: donde invertir ese dinero extra",
+  "Seguro de desempleo Peru 2026: como funciona y quienes pueden acceder",
+  "Historial crediticio en Peru: como mejorarlo para obtener prestamos",
+  "CTS noviembre 2026: lo que debes saber con 3 meses de anticipacion",
+  // --- Estacionales: Setiembre - Octubre ---
+  "CTS noviembre 2026: fecha exacta, calculo y guia completa",
+  "CTS 2026: cuanto depositan en noviembre y hasta cuando retirar",
+  "Gratificacion Diciembre 2026: fecha, calculo y cuanto te pagan",
+  "ONP o AFP en 2026: cual te conviene mas segun tu sueldo y edad",
+  "Tipo de cambio Octubre 2026: panorama del dolar en Peru",
+  "Presupuesto para fin de ano: prepara tus finanzas para Navidad",
+  // --- Estacionales: Noviembre - Diciembre ---
+  "Gratificacion Diciembre 2026: fecha tope y cuanto te depositan",
+  "Navidad 2026: cuanto gastaran los peruanos en regalos y cena",
+  "Cierre de ano 2026: proteger tus ahorros de la volatilidad del dolar",
+  "Propósitos financieros 2027: metas de ahorro e inversion",
+  "Compra navidad: como no endeudarte en diciembre con tarjetas",
+  "Cuentas de ahorro en Peru 2026: mejores tasas y donde abrirlas",
 ];
 
 function getWeightedTopic() {
   const now = new Date();
   const month = now.getMonth() + 1; // 1-12
 
-  // Indices de los grupos estacionales en EDUCATIONAL_TOPICS
-  const alwaysGreenEnd = 23; // indices 0-22 (23 topics)
-  const eneMarStart = 23; const eneMarEnd = 25;
-  const abrJunStart = 26; const abrJunEnd = 30;
-  const julSepStart = 31; const julSepEnd = 38;
-  const octDicStart = 39; const octDicEnd = 43;
+  // Indices en EDUCATIONAL_TOPICS: siempre verde [0-27], luego grupos bimensuales
+  const evergreen = { start: 0, end: 27 };
+  const groups = [
+    { months: [1, 2],  start: 28, end: 33 },  // Ene-Feb
+    { months: [3, 4],  start: 34, end: 39 },  // Mar-Abr
+    { months: [5, 6],  start: 40, end: 47 },  // May-Jun
+    { months: [7, 8],  start: 48, end: 55 },  // Jul-Ago
+    { months: [9, 10], start: 56, end: 61 },  // Sep-Oct
+    { months: [11, 12],start: 62, end: 67 },  // Nov-Dic
+  ];
 
-  let seasonalStart, seasonalEnd;
+  const current = groups.find((g) => g.months.includes(month));
+  const seasonal = current
+    ? EDUCATIONAL_TOPICS.slice(current.start, current.end + 1)
+    : [];
 
-  if (month <= 3) {
-    seasonalStart = eneMarStart; seasonalEnd = eneMarEnd;
-  } else if (month <= 6) {
-    seasonalStart = abrJunStart; seasonalEnd = abrJunEnd;
-  } else if (month <= 9) {
-    seasonalStart = julSepStart; seasonalEnd = julSepEnd;
-  } else {
-    seasonalStart = octDicStart; seasonalEnd = octDicEnd;
-  }
-
-  // 70% probabilidad de elegir un tema estacional, 30% siempre verde
-  const pool = Math.random() < 0.7
-    ? EDUCATIONAL_TOPICS.slice(seasonalStart, seasonalEnd + 1)
-    : EDUCATIONAL_TOPICS.slice(0, alwaysGreenEnd + 1);
+  // 50% estacional, 50% siempre verde (evita saturar con el mismo tema)
+  const pool = Math.random() < 0.5 && seasonal.length > 0
+    ? seasonal
+    : EDUCATIONAL_TOPICS.slice(evergreen.start, evergreen.end + 1);
 
   return pool[Math.floor(Math.random() * pool.length)];
 }
@@ -455,7 +483,7 @@ export async function generateArticle(openai, type, data, options = {}) {
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
       const response = await openai.chat.completions.create({
-        model: MODEL,
+        model: modelForType(type),
         messages: [
           { role: 'system', content: system },
           { role: 'user', content: userPrompt },

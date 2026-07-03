@@ -1,10 +1,10 @@
-const MODEL = process.env.OPENAI_MODEL || 'gpt-5.4-mini';
+const SEARCH_MODEL = process.env.OPENAI_SEARCH_MODEL || process.env.OPENAI_MODEL || 'gpt-5.4-mini';
 
 export async function fetchNewsContext(openai) {
-  console.log(`[news-fetcher] Buscando noticias actuales con ${MODEL}...`);
+  console.log(`[news-fetcher] Buscando noticias actuales con ${SEARCH_MODEL}...`);
 
   const response = await openai.responses.create({
-    model: MODEL,
+    model: SEARCH_MODEL,
     tools: [{ type: 'web_search' }],
     input: `Busca y resume las noticias mas recientes (ultimos 7 dias) sobre el dolar en Peru y el tipo de cambio USD/PEN. Incluye tambien noticias sobre: economia peruana, decisiones del BCRP, eventos politicos relevantes (elecciones, cambios de gobierno), inflacion, y cualquier factor que este afectando al mercado cambiario peruano.
 
