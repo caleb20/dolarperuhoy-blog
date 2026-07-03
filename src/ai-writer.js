@@ -215,6 +215,7 @@ JSON:
 }
 
 const EDUCATIONAL_TOPICS = [
+  // --- Siempre verdes ---
   "Que es el spread cambiario y por que deberia importarte",
   "5 errores comunes al cambiar dolares en Peru",
   "Casas de cambio online vs bancos: cual te conviene mas",
@@ -232,28 +233,79 @@ const EDUCATIONAL_TOPICS = [
   "Impuestos y comisiones al cambiar dolares en Peru: lo que debes saber",
   "Inflacion en Peru: como afecta el valor de tus ahorros en soles",
   "Que es el indice de tipo de cambio real y por que importa",
-  "CTS 2026: cuanto puedes retirar y a que tipo de cambio conviene",
   "Como negociar una mejor tasa de cambio en una casa de cambio",
   "ETF en dolares: una opcion de inversion para peruanos",
-  "El impacto de las elecciones en el tipo de cambio peruano",
   "Dolarizar tu portafolio: cuanto y cuando hacerlo",
   "Criptomonedas vs dolar: cual es mejor refugio en Peru",
   "Entendiendo las reservas internacionales y su efecto en el dolar",
   "Prestamos en dolares vs soles: cual te conviene mas en 2026",
+  // --- Estacionales: Enero - Marzo ---
+  "CTS 2026: calendario de pagos, calculo y fechas clave en Peru",
+  "Declaracion de Renta 2025 SUNAT: cronograma, pasos y como hacerlo",
+  "Vacaciones utiles 2026: cuanto cuestan y como financiarlas sin endeudarse",
+  // --- Estacionales: Abril - Junio ---
+  "CTS mayo 2026: cuanto depositan, como calcular y hasta cuando retirar",
+  "CTS 2026: conviene retirar todo o dejarlo en el banco",
+  "Declaracion de Renta 2025: ultimos dias para declarar ante SUNAT",
+  "Inflacion y tipo de cambio: como afecta tu poder adquisitivo en Peru",
+  "Ahorrar en dolares: cuanto necesitas para empezar y donde hacerlo",
+  // --- Estacionales: Julio - Setiembre ---
+  "Gratificacion Julio 2026: cuanto te pagan, calculo y fechas de deposito",
+  "Gratificacion 2026: cuanto deposita tu empleador y como se calcula el monto",
+  "Fiestas Patrias Peru 2026: cuanto gastaran los peruanos en julio",
+  "CTS vs Gratificacion: diferencias, montos y cuales son tus derechos",
+  "Presupuesto para Fiestas Patrias: como celebrar sin descuidar tus finanzas",
+  "Tipo de cambio julio 2026: tendencia del dolar en Fiestas Patrias",
+  "Ahorro en soles vs dolares en Peru: que conviene mas en 2026",
+  // --- Estacionales: Octubre - Diciembre ---
+  "CTS noviembre 2026: fecha de deposito, calculo y todo lo que debes saber",
+  "Gratificacion Diciembre 2026: cuanto te pagan y como calcular el monto",
+  "Navidad 2026: cuanto gastaran los peruanos en regalos y celebraciones",
+  "Cierre de ano: como proteger tus ahorros de la volatilidad del dolar",
+  "ONP o AFP en 2026: cual te conviene mas segun tu sueldo",
 ];
 
-function getRandomTopic() {
-  return EDUCATIONAL_TOPICS[Math.floor(Math.random() * EDUCATIONAL_TOPICS.length)];
+function getWeightedTopic() {
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1-12
+
+  // Indices de los grupos estacionales en EDUCATIONAL_TOPICS
+  const alwaysGreenEnd = 23; // indices 0-22 (23 topics)
+  const eneMarStart = 23; const eneMarEnd = 25;
+  const abrJunStart = 26; const abrJunEnd = 30;
+  const julSepStart = 31; const julSepEnd = 38;
+  const octDicStart = 39; const octDicEnd = 43;
+
+  let seasonalStart, seasonalEnd;
+
+  if (month <= 3) {
+    seasonalStart = eneMarStart; seasonalEnd = eneMarEnd;
+  } else if (month <= 6) {
+    seasonalStart = abrJunStart; seasonalEnd = abrJunEnd;
+  } else if (month <= 9) {
+    seasonalStart = julSepStart; seasonalEnd = julSepEnd;
+  } else {
+    seasonalStart = octDicStart; seasonalEnd = octDicEnd;
+  }
+
+  // 70% probabilidad de elegir un tema estacional, 30% siempre verde
+  const pool = Math.random() < 0.7
+    ? EDUCATIONAL_TOPICS.slice(seasonalStart, seasonalEnd + 1)
+    : EDUCATIONAL_TOPICS.slice(0, alwaysGreenEnd + 1);
+
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 function buildEducationalPrompt() {
-  const topic = getRandomTopic();
+  const topic = getWeightedTopic();
   const EDU_STRUCTURES = [
     'Abre con una pregunta o situacion cotidiana, luego explica los conceptos, da ejemplos practicos, y cierra con consejos aplicables',
     'Empieza definiendo el problema, luego desarrolla las alternativas o soluciones, y termina con recomendaciones',
     'Organizalo como guia paso a paso: primero los conceptos basicos, luego la aplicacion practica, y finalmente errores comunes a evitar',
   ];
   const selectedEdu = EDU_STRUCTURES[Math.floor(Math.random() * EDU_STRUCTURES.length)];
+
+  const isSeasonal = /\b(CTS|Gratificacion|Fiestas Patrias|Declaracion|Navidad|vacaciones|mayo|julio|diciembre|2026|2025)\b/i.test(topic);
 
   return `Fecha actual: ${getDayContext()}
 
@@ -263,10 +315,10 @@ TEMA: "${topic}"
 
 INSTRUCCIONES:
 - Contenido EDUCATIVO y ORIGINAL
-- NO cites fuentes externas ni eventos de fechas concretas
 - Tono didactico y accesible
-- Ejemplos practicos y consejos utiles
+- Ejemplos practicos con montos realistas
 - No menciones "segun expertos" o "estudios recientes"
+${isSeasonal ? `- IMPORTANTE: Usa fechas y datos concretos (ej: "la gratificacion se deposita en julio", "la CTS se paga en mayo y noviembre"). No inventes cifras oficiales exactas pero si da rangos realistas y contexto temporal util.` : `- NO uses fechas ni eventos concretos. Manten el contenido atemporal.`}
 
 ESTRUCTURA (body_html):
 ${selectedEdu}
@@ -275,14 +327,14 @@ USA TUS PROPIOS H2 segun el flujo.
 
 JSON:
 {
-  "title": "string (max 70 chars)",
-  "excerpt": "string (2-3 oraciones, 130-200 chars)",
+  "title": "string (max 70 chars, incluye la palabra clave al inicio)",
+  "excerpt": "string (2-3 oraciones, 130-200 chars, responde a la intencion de busqueda)",
   "body_html": "string (articulo en HTML, 400-700 palabras)",
   "analysis_text": "string (3-4 oraciones de resumen educativo)",
   "impact_text": "string (aplicacion practica, 2-3 oraciones)",
-  "tags": "string[] (3-6 tags)",
-  "seo_title": "string (max 60 chars)",
-  "seo_description": "string (max 160 chars)",
+  "tags": "string[] (3-6 tags, incluye la keyword principal)",
+  "seo_title": "string (max 60 chars, incluye la keyword principal)",
+  "seo_description": "string (max 160 chars, responde a la intencion de busqueda e incluye la keyword)",
   "read_time_minutes": "number (4-8)",
   "featured_image_query": "string (busqueda corta para imagen de portada)"
 }`;
@@ -423,7 +475,7 @@ export async function generateArticle(openai, type, data, options = {}) {
       }
 
       article._type = type;
-      article._topic = type === 'educational' ? userPrompt.match(/TEMA ASIGNADO: "(.+)"/)?.[1] : null;
+      article._topic = type === 'educational' ? userPrompt.match(/TEMA: "(.+)"/)?.[1] : null;
 
       return article;
     } catch (error) {

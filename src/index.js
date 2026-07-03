@@ -17,6 +17,8 @@ function getArticleType() {
     case 'Wednesday': return 'midweek';
     case 'Thursday': return 'news';
     case 'Friday': return 'news';
+    case 'Saturday': return 'educational';
+    case 'Sunday': return 'educational';
     default: return null;
   }
 }
@@ -26,6 +28,7 @@ const TYPE_LABELS = {
   midweek: 'Pulso de Media Semana',
   comparativa: 'Comparativa de Tasas',
   news: 'Articulo de Actualidad',
+  educational: 'Articulo Educativo',
 };
 
 async function main() {
