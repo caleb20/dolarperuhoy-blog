@@ -21,11 +21,16 @@ REGLAS ESTRICTAS DE SEO:
 6. Incluye una seccion de cierre o conclusion al final
 7. CADA ARTICULO debe tener ESTRUCTURA UNICA: varia los H2, no repitas el mismo patron entre articulos
 
-REGLAS PARA TITULOS Y SEO:
-- title: Max 70 chars. DEBE incluir la palabra clave principal al inicio. Usa numeros, preguntas o beneficios para atraer clics. Ej: "CTS 2026: Cuanto Pagan y Como Calcular el Monto" o "Dolar Hoy en Peru: Cotizacion y Mejor Tipo de Cambio"
-- seo_title: Max 60 chars. DEBE contener la keyword principal. Sin relleno. Ej: "CTS 2026: Fechas, Calculo y Monto" o "Dolar Hoy: Cotizacion en Peru"
-- seo_description: Max 160 chars. Responde a la intencion de busqueda. Incluye la keyword y un beneficio claro. Ej: "Descubre cuando pagan la CTS 2026 en Peru, como calcular el monto exacto y hasta cuando puedes retirarla. Guia completa actualizada."
-- evita titulos genericos como "Analisis Semanal del Dolar" o "Pulso de Media Semana". Se especifico con datos concretos: "Dolar Sube a S/3.42: Analisis Semanal del Tipo de Cambio"
+REGLAS PARA TITULOS Y SEO (ALTAMENTE OPTIMIZADAS PARA CTR):
+- title: Max 65-70 chars. PATRONES QUE FUNCIONAN MEJOR EN CTR:
+  1. Empieza con la CIFRA o DATO CLAVE: "Dolar Sube a S/3.42: Analisis Semanal"
+  2. Usa NUMEROS: "CTS 2026: 5 Claves para Calcular tu Deposito"
+  3. Formulas con beneficio: keyword + promesa + contexto
+  4. Preguntas que la gente busca: "?Cuando Pagan la CTS 2026 en Peru?"
+  EJEMPLOS: "Dolar HOY en Peru: Cotizacion a S/3.42 - Mejor Tipo de Cambio" | "CTS 2026: Cuanto Pagan, Fechas y Calculo del Deposito" | "Dolar Baja a S/3.40: Que Pasara esta Semana?"
+- seo_title: Max 55-60 chars. MAS CORTO Y DIRECTO. Incluye keyword + dato numerico o diferencia. Ej: "CTS 2026: Monto, Fechas y Calculo" | "Dolar Hoy: Cotizacion a S/3.42 en Peru"
+- seo_description: Max 150-155 chars. Usa este patron: [keyword] + [dato concreto] + [beneficio para el lector] + [llamada a accion suave]. Ej: "?Descubre cuando pagan la CTS 2026 en Peru, cuanto recibes segun tu sueldo y hasta cuando puedes retirarla. Calcula tu monto exacto aqui."
+- EVITA ABSOLUTAMENTE titulos genericos. Cada titulo debe ser UNICO y responderse esta pregunta: "?Por que alguien haria clic en esto y no en otro resultado?"
 - Los tags deben incluir la keyword principal y terminos relacionados que la gente busca`;
 
 function getDayContext() {
@@ -62,16 +67,18 @@ ${selectedStyle}
 
 USA TUS PROPIOS H2 segun el flujo del articulo, no los impongas desde afuera.
 
+TITULO: DEBE incluir el valor de cierre mas reciente y la direccion (subio/bajo). Ej: "Dolar Sube a S/3.42: Analisis Semanal del Tipo de Cambio en Peru" o "Dolar Cierra la Semana en S/3.40: Que Esperar la Proxima Semana"
+
 JSON:
 {
-  "title": "string (max 70 chars)",
+  "title": "string (max 70 chars, INCLUYE CIFRA CLAVE + DIRECCION)",
   "excerpt": "string (2-3 oraciones, 130-200 chars)",
   "body_html": "string (articulo completo en HTML, 400-800 palabras)",
   "analysis_text": "string (4-6 oraciones destacando lo mas importante)",
   "impact_text": "string (impacto en Peru, 3-4 oraciones)",
   "tags": "string[] (3-6 tags)",
-  "seo_title": "string (max 60 chars)",
-  "seo_description": "string (max 160 chars)",
+  "seo_title": "string (max 60 chars, INCLUYE CIFRA + DIRECCION)",
+  "seo_description": "string (max 155 chars, INCLUYE CIFRA + DIRECCION + BENEFICIO)",
   "read_time_minutes": "number (3-8)",
   "featured_image_query": "string (busqueda corta para imagen de portada)"
 }
@@ -114,16 +121,18 @@ ${selectedMid}
 
 USA TUS PROPIOS H2. No repitas la misma estructura de otros articulos.
 
+TITULO: DEBE incluir el valor actual del dolar y la direccion de la semana. Ej: "Dolar en S/3.41: Pulso de Media Semana - Cotizacion Actual" o "Dolar Baja a S/3.40: Analisis a Mitad de Semana"
+
 JSON:
 {
-  "title": "string (max 70 chars)",
+  "title": "string (max 70 chars, INCLUYE CIFRA Y DIRECCION)",
   "excerpt": "string (2-3 oraciones, 130-200 chars)",
   "body_html": "string (articulo en HTML, 300-500 palabras)",
   "analysis_text": "string (3-4 oraciones)",
   "impact_text": "string (impacto en Peru, 2-3 oraciones)",
   "tags": "string[] (3-6 tags)",
-  "seo_title": "string (max 60 chars)",
-  "seo_description": "string (max 160 chars)",
+  "seo_title": "string (max 60 chars, INCLUYE CIFRA)",
+  "seo_description": "string (max 155 chars, INCLUYE CIFRA + DIRECCION + BENEFICIO)",
   "read_time_minutes": "number (3-6)",
   "featured_image_query": "string (busqueda corta para imagen de portada)"
 }`;
@@ -152,16 +161,18 @@ ${selected}
 
 USA TUS PROPIOS H2 segun el flujo.
 
+TITULO: Incluye la MEJOR TASA encontrada y la palabra "Comparativa". Ej: "Comparativa: Mejor Tasa de Cambio a S/3.40 — Gana mas por tus Dolares"
+
 JSON:
 {
-  "title": "string (max 70 chars, ej: 'Comparativa: Mejores Tasas de Cambio [fecha]')",
-  "excerpt": "string (2-3 oraciones, 130-200 chars)",
+  "title": "string (max 70 chars, INCLUYE MEJOR TASA DEL DIA)",
+  "excerpt": "string (2-3 oraciones con la mejor opcion destacada, 130-200 chars)",
   "body_html": "string (articulo en HTML, 350-600 palabras)",
-  "analysis_text": "string (3-4 oraciones destacando la mejor opcion)",
-  "impact_text": "string (ahorro potencial al elegir bien, 2-3 oraciones)",
+  "analysis_text": "string (3-4 oraciones destacando la mejor opcion y el ahorro potencial)",
+  "impact_text": "string (ahorro potencial al elegir bien, 2-3 oraciones, ej: 'Puedes ahorrar hasta S/...')",
   "tags": "string[] (3-6 tags, ej: comparativa, tasas, casas de cambio)",
-  "seo_title": "string (max 60 chars)",
-  "seo_description": "string (max 160 chars)",
+  "seo_title": "string (max 60 chars, INCLUYE MEJOR TASA)",
+  "seo_description": "string (max 155 chars, INCLUYE MEJOR TASA + AHORRO POTENCIAL)",
   "read_time_minutes": "number (3-5)",
   "featured_image_query": "string (busqueda corta para imagen de portada)"
 }`;
@@ -204,16 +215,18 @@ ${selected}
 
 USA TUS PROPIOS H2 segun el flujo del contenido.
 
+TITULO: Usa formato "Guia [tema]: [beneficio numerico]". Ej: "Guia para Cambiar Dolares: Como Ahorrar hasta S/15 por cada $100"
+
 JSON:
 {
-  "title": "string (max 70 chars)",
-  "excerpt": "string (2-3 oraciones, 130-200 chars)",
+  "title": "string (max 70 chars, incluye 'Guia' o 'Pasos' y un beneficio concreto)",
+  "excerpt": "string (2-3 oraciones con el beneficio principal, 130-200 chars)",
   "body_html": "string (articulo en HTML, 400-700 palabras)",
-  "analysis_text": "string (3-4 oraciones resumiendo los puntos clave)",
-  "impact_text": "string (beneficio practico para el lector, 2-3 oraciones)",
+  "analysis_text": "string (3-4 oraciones resumiendo los puntos clave con datos practicos)",
+  "impact_text": "string (ahorro o beneficio cuantificable para el lector, 2-3 oraciones)",
   "tags": "string[] (3-6 tags)",
-  "seo_title": "string (max 60 chars)",
-  "seo_description": "string (max 160 chars)",
+  "seo_title": "string (max 60 chars, keyword + beneficio)",
+  "seo_description": "string (max 155 chars, beneficio principal + cuantificacion + llamado a accion)",
   "read_time_minutes": "number (4-7)",
   "featured_image_query": "string (busqueda corta para imagen de portada)"
 }`;
@@ -353,16 +366,18 @@ ${selectedEdu}
 
 USA TUS PROPIOS H2 segun el flujo.
 
+TITULO: Usa NUMEROS y BENEFICIOS. Ej: "CTS 2026: 5 Pasos para Calcular tu Deposito" o "?Donde Invertir S/1000 en Peru? 3 Opciones con Mayor Rentabilidad"
+
 JSON:
 {
-  "title": "string (max 70 chars, incluye la palabra clave al inicio)",
-  "excerpt": "string (2-3 oraciones, 130-200 chars, responde a la intencion de busqueda)",
+  "title": "string (max 70 chars, USA NUMEROS O PREGUNTAS PARA ATRAPAR CLICS)",
+  "excerpt": "string (2-3 oraciones que respondan directamente a la duda del usuario, 130-200 chars)",
   "body_html": "string (articulo en HTML, 400-700 palabras)",
-  "analysis_text": "string (3-4 oraciones de resumen educativo)",
-  "impact_text": "string (aplicacion practica, 2-3 oraciones)",
+  "analysis_text": "string (3-4 oraciones de resumen educativo con datos practicos)",
+  "impact_text": "string (aplicacion practica y cuanto puede ahorrar/ganar el lector, 2-3 oraciones)",
   "tags": "string[] (3-6 tags, incluye la keyword principal)",
-  "seo_title": "string (max 60 chars, incluye la keyword principal)",
-  "seo_description": "string (max 160 chars, responde a la intencion de busqueda e incluye la keyword)",
+  "seo_title": "string (max 60 chars, incluye NUMERO o BENEFICIO)",
+  "seo_description": "string (max 155 chars, responde la pregunta clave e incluye un beneficio numerico)",
   "read_time_minutes": "number (4-8)",
   "featured_image_query": "string (busqueda corta para imagen de portada)"
 }`;
@@ -402,16 +417,18 @@ ${selected}
 
 USA TUS PROPIOS H2 segun el flujo del contenido.
 
+TITULO: Incluye el evento PRINCIPAL + impacto en el dolar. Ej: "BCRP Mantiene Tasa en 4.25%: Impacto en el Dolar y Tu Bolsillo" o "Elecciones 2026: Como Afectan al Tipo de Cambio USD/PEN"
+
 JSON:
 {
-  "title": "string (max 70 chars, ej: 'Impacto de [evento] en el dolar: analisis [fecha]')",
-  "excerpt": "string (2-3 oraciones, 130-200 chars)",
+  "title": "string (max 70 chars, INCLUYE EVENTO PRINCIPAL + SU EFECTO EN EL DOLAR)",
+  "excerpt": "string (2-3 oraciones con el impacto clave, 130-200 chars)",
   "body_html": "string (articulo en HTML, 400-700 palabras)",
-  "analysis_text": "string (3-4 oraciones destacando los puntos clave)",
-  "impact_text": "string (impacto para el lector peruano, 2-3 oraciones)",
+  "analysis_text": "string (3-4 oraciones destacando los puntos clave y lo que viene)",
+  "impact_text": "string (impacto concreto para el lector peruano, 2-3 oraciones)",
   "tags": "string[] (3-6 tags, incluir al menos 2 relacionados a las noticias)",
-  "seo_title": "string (max 60 chars)",
-  "seo_description": "string (max 160 chars)",
+  "seo_title": "string (max 60 chars, evento + impacto en dolar)",
+  "seo_description": "string (max 155 chars, evento + impacto cuantificable + que esperar)",
   "read_time_minutes": "number (3-6)",
   "featured_image_query": "string (busqueda corta para imagen de portada)"
 }`;

@@ -1,0 +1,279 @@
+﻿[
+  {
+    "slug": "que-es-tipo-cambio",
+    "data": {
+      "sections": {
+        "definicion": {
+          "content": [
+            "El tipo de cambio es el valor de una moneda en t├®rminos de otra, reflejando cu├íntos soles se requieren para adquirir un d├│lar estadounidense. Este indicador es fundamental para entender las relaciones econ├│micas internacionales y la competitividad de un pa├¡s.",
+            "En Per├║, el tipo de cambio se determina principalmente por la oferta y demanda de divisas en el mercado cambiario. Factores como las exportaciones, importaciones, inversi├│n extranjera y remesas influyen directamente en su comportamiento.",
+            "Es importante destacar que el tipo de cambio no es fijo; fluct├║a constantemente debido a las variaciones en la oferta y demanda de divisas, lo que puede generar cambios en su valor a lo largo del tiempo."
+          ]
+        },
+        "tipos": {
+          "content": [],
+          "subsections": [
+            {
+              "title": "Tipo de cambio interbancario",
+              "text": "Es el tipo de cambio utilizado en las transacciones entre bancos. Representa el valor al que las instituciones financieras compran y venden d├│lares entre s├¡, y suele ser m├ís favorable que el tipo de cambio al p├║blico."
+            },
+            {
+              "title": "Tipo de cambio SUNAT",
+              "text": "Es el tipo de cambio oficial establecido por la Superintendencia Nacional de Aduanas y de Administraci├│n Tributaria (SUNAT) para efectos tributarios y aduaneros. Se utiliza para la liquidaci├│n de impuestos y el c├ílculo de aranceles en importaciones y exportaciones."
+            },
+            {
+              "title": "Tipo de cambio compra",
+              "text": "Es el precio al que las entidades financieras adquieren d├│lares de sus clientes. Generalmente, es m├ís bajo que el tipo de cambio de venta, ya que el banco compra divisas a un precio inferior al que las vende."
+            },
+            {
+              "title": "Tipo de cambio venta",
+              "text": "Es el precio al que las entidades financieras venden d├│lares a sus clientes. Este tipo de cambio suele ser m├ís alto que el de compra, reflejando el margen de ganancia de la instituci├│n financiera."
+            },
+            {
+              "title": "D├│lar Oco├▒a",
+              "text": "Es el tipo de cambio que se observa en el mercado paralelo o informal, conocido como 'mercado negro'. Aunque no es oficial, muchas personas recurren a este mercado debido a la diferencia en los tipos de cambio ofrecidos por las entidades financieras."
+            }
+          ]
+        },
+        "factores": {
+          "content": [
+            "El tipo de cambio en Per├║ est├í influenciado por una variedad de factores internos y externos que afectan la oferta y demanda de divisas. Comprender estos factores es esencial para anticipar posibles movimientos en el tipo de cambio y tomar decisiones informadas en el ├ímbito econ├│mico."
+          ],
+          "bullets": [
+            "Decisiones del BCRP: Las pol├¡ticas monetarias implementadas por el Banco Central de Reserva del Per├║, como la intervenci├│n en el mercado cambiario y la tasa de inter├®s de referencia, pueden influir en la estabilidad del sol frente al d├│lar.",
+            "Tasas de la FED: Las decisiones de la Reserva Federal de Estados Unidos, especialmente en relaci├│n con las tasas de inter├®s, afectan el flujo de capitales hacia y desde Per├║, impactando el tipo de cambio.",
+            "Precio del cobre: Per├║ es un importante exportador de cobre. Las variaciones en su precio internacional afectan los ingresos por exportaciones y, por ende, la oferta de d├│lares en el pa├¡s.",
+            "Inflaci├│n: Una tasa de inflaci├│n m├ís alta en Per├║ en comparaci├│n con Estados Unidos puede llevar a una depreciaci├│n del sol, ya que reduce el poder adquisitivo de la moneda local.",
+            "Estabilidad pol├¡tica: Un entorno pol├¡tico estable genera confianza en los inversionistas, aumentando la demanda de soles y fortaleciendo la moneda peruana.",
+            "Remesas: El env├¡o de dinero desde peruanos en el extranjero incrementa la oferta de d├│lares en el pa├¡s, lo que puede influir en la apreciaci├│n del sol.",
+            "Comercio exterior: Un super├ívit comercial, donde las exportaciones superan a las importaciones, aumenta la demanda de soles y puede llevar a la apreciaci├│n de la moneda local."
+          ]
+        },
+        "importancia": {
+          "content": [
+            "El tipo de cambio tiene un impacto directo en diversos aspectos de la econom├¡a peruana, afectando tanto a consumidores como a empresas. Su comprensi├│n es esencial para la toma de decisiones financieras y econ├│micas informadas."
+          ],
+          "bullets": [
+            "Precios de productos: Un tipo de cambio m├ís alto puede encarecer los productos importados, afectando el costo de bienes y servicios en el mercado local.",
+            "Ahorros: La depreciaci├│n del sol puede disminuir el valor real de los ahorros en soles, incentivando a los ahorristas a buscar alternativas en d├│lares u otras inversiones.",
+            "Cr├®ditos: Las tasas de inter├®s y las condiciones de los cr├®ditos pueden variar seg├║n el tipo de cambio, especialmente en pr├®stamos denominados en d├│lares.",
+            "Viajes: Un tipo de cambio desfavorable puede encarecer los viajes al extranjero, ya que se requieren m├ís soles para adquirir la misma cantidad de d├│lares.",
+            "Inversiones: La estabilidad del tipo de cambio es crucial para la inversi├│n extranjera, ya que la volatilidad puede generar incertidumbre y afectar las decisiones de inversi├│n."
+          ]
+        }
+      },
+      "faqItems": [
+        {
+          "q": "┬┐Por qu├® sube o baja el tipo de cambio en Per├║?",
+          "r": "El tipo de cambio en Per├║ fluct├║a debido a factores como la oferta y demanda de divisas, pol├¡ticas monetarias internas y externas, precios internacionales de commodities y la estabilidad pol├¡tica y econ├│mica del pa├¡s."
+        },
+        {
+          "q": "┬┐Qu├® es el tipo de cambio interbancario?",
+          "r": "Es el tipo de cambio utilizado en las transacciones entre bancos, representando el valor al que las instituciones financieras compran y venden d├│lares entre s├¡."
+        },
+        {
+          "q": "┬┐C├│mo afecta el tipo de cambio a los precios de los productos importados?",
+          "r": "Un tipo de cambio m├ís alto puede encarecer los productos importados, ya que se requieren m├ís soles para adquirir la misma cantidad de d├│lares, trasladando este aumento al precio final de los bienes y servicios."
+        },
+        {
+          "q": "┬┐Qu├® es el D├│lar Oco├▒a?",
+          "r": "Es el tipo de cambio que se observa en el mercado paralelo o informal, conocido como 'mercado negro', donde las transacciones de divisas se realizan fuera del circuito financiero oficial."
+        }
+      ]
+    }
+  },
+  {
+    "slug": "dolar-ocona",
+    "data": {
+      "sections": {
+        "que-es": {
+          "content": [
+            "El 'd├│lar Oco├▒a' se refiere al tipo de cambio del d├│lar estadounidense en el mercado paralelo de Per├║, especialmente en la zona del Jir├│n Oco├▒a en Lima, conocida por concentrar numerosas casas de cambio desde la d├®cada de 1980. ([world-today-news.com](https://www.world-today-news.com/what-is-the-ocona-dollar-peruvian-parallel-exchange-rate-explained/?utm_source=openai))",
+            "El mercado paralelo funciona fuera del sistema financiero oficial, donde la oferta y demanda de d├│lares determinan su cotizaci├│n, influenciada por factores como la pol├¡tica econ├│mica, la estabilidad pol├¡tica y la confianza en la econom├¡a nacional. ([world-today-news.com](https://www.world-today-news.com/what-is-the-ocona-dollar-peruvian-parallel-exchange-rate-explained/?utm_source=openai))",
+            "El t├®rmino 'd├│lar Oco├▒a' proviene del Jir├│n Oco├▒a en Lima, que se convirti├│ en un centro neur├ílgico para el intercambio de divisas en el mercado informal. Su relevancia radica en ofrecer tasas de cambio que pueden diferir de las oficiales, reflejando la din├ímica del mercado paralelo. ([world-today-news.com](https://www.world-today-news.com/what-is-the-ocona-dollar-peruvian-parallel-exchange-rate-explained/?utm_source=openai))"
+          ]
+        },
+        "comparativa": {
+          "content": [
+            "A continuaci├│n, se presenta una comparativa entre las principales opciones para la compra y venta de d├│lares en Per├║, considerando aspectos como el spread, seguridad y rapidez de las transacciones."
+          ],
+          "rows": [
+            {
+              "opcion": "Casas online (Kambista, Rextie)",
+              "tipo": "Mejor spread (0.5-1.5%)",
+              "seguridad": "Alta (SBS)",
+              "rapidez": "15 min - 2 h"
+            },
+            {
+              "opcion": "D├│lar Oco├▒a (casas f├¡sicas)",
+              "tipo": "Spread medio (1-3%)",
+              "seguridad": "Media (verificar SBS)",
+              "rapidez": "Inmediato (efectivo)"
+            },
+            {
+              "opcion": "Bancos (BCP, BBVA, Interbank)",
+              "tipo": "Spread alto (2-4%)",
+              "seguridad": "M├íxima",
+              "rapidez": "Inmediato"
+            },
+            {
+              "opcion": "Cambistas de calle",
+              "tipo": "Spread variable",
+              "seguridad": "Baja (no regulados)",
+              "rapidez": "Inmediato"
+            }
+          ]
+        },
+        "ventajas": {
+          "content": [],
+          "bullets": {
+            "pros": [
+              "Acceso a tasas de cambio m├ís competitivas en comparaci├│n con las ofrecidas por bancos tradicionales.",
+              "Rapidez en las transacciones, especialmente en casas de cambio f├¡sicas y cambistas de calle.",
+              "Mayor flexibilidad en montos y horarios de operaci├│n.",
+              "Posibilidad de negociar el tipo de cambio en algunos casos."
+            ],
+            "cons": [
+              "Riesgo de transacciones con casas de cambio no autorizadas o sin supervisi├│n de la SBS.",
+              "Posibilidad de recibir billetes falsificados o en mal estado.",
+              "Variabilidad en el tipo de cambio, que puede generar p├®rdidas si no se monitorea adecuadamente.",
+              "Limitaciones en la cantidad de d├│lares disponibles para cambio en ciertos momentos."
+            ]
+          }
+        },
+        "consejos": {
+          "content": [],
+          "tips": [
+            "Antes de realizar una transacci├│n, verifica que la casa de cambio est├® autorizada por la SBS para garantizar la seguridad de tu operaci├│n.",
+            "Compara las tasas de cambio ofrecidas por diferentes casas de cambio y bancos para obtener la mejor oferta.",
+            "Evita realizar transacciones con cambistas de calle no regulados, ya que pueden ofrecer tasas atractivas pero con altos riesgos asociados.",
+            "Mantente informado sobre las tendencias del mercado cambiario y las noticias econ├│micas que puedan afectar el tipo de cambio.",
+            "Considera utilizar plataformas digitales de cambio de divisas que ofrecen seguridad y conveniencia en las transacciones.",
+            "Si realizas transacciones en efectivo, verifica la autenticidad de los billetes para evitar recibir dinero falso."
+          ]
+        }
+      }
+    }
+  },
+  {
+    "slug": "diferencia-compra-venta-dolares",
+    "data": {
+      "sections": {
+        "que-es": {
+          "content": [
+            "El tipo de cambio de compra es el precio al que las entidades financieras adquieren d├│lares estadounidenses de los clientes que desean venderlos. Es decir, es el monto en soles que una instituci├│n est├í dispuesta a pagar por cada d├│lar.",
+            "El tipo de cambio de venta es el precio al que las entidades financieras venden d├│lares a los clientes que desean comprarlos. Representa el monto en soles que se debe pagar por cada d├│lar que se adquiere.",
+            "Existen dos precios debido a que las instituciones financieras act├║an como intermediarios en el mercado cambiario. Al comprar d├│lares, buscan obtenerlos a un precio m├ís bajo para luego venderlos a un precio m├ís alto, generando as├¡ una ganancia por la diferencia entre ambos precios.",
+            "El spread es la diferencia entre el tipo de cambio de compra y el de venta. Las instituciones ganan dinero con el spread al comprar d├│lares a un precio inferior y venderlos a un precio superior, obteniendo una ganancia por cada transacci├│n realizada."
+          ]
+        },
+        "ejemplo": {
+          "content": [
+            "Para ilustrar c├│mo funciona el spread, consideremos el siguiente ejemplo con datos reales del mercado peruano en junio de 2026:"
+          ],
+          "ejemplo": {
+            "compra": "S/ 3.4000",
+            "venta": "S/ 3.4020",
+            "spread": "S/ 0.0020 (0.06%)",
+            "explicacion": [
+              "C├ílculo del spread: S/ 3.4020 (venta) - S/ 3.4000 (compra) = S/ 0.0020.",
+              "Porcentaje del spread: (S/ 0.0020 / S/ 3.4000) * 100 = 0.06%.",
+              "Conclusi├│n: El spread de S/ 0.0020 representa un 0.06% del tipo de cambio de compra, indicando la ganancia potencial de la instituci├│n por cada d├│lar transaccionado."
+            ]
+          }
+        },
+        "por-que-existe": {
+          "content": [],
+          "bullets": [
+            "Costos operativos: Las instituciones financieras incurren en gastos por la gesti├│n de transacciones, personal y tecnolog├¡a, que se reflejan en el spread.",
+            "Riesgo cambiario: Las fluctuaciones en el mercado de divisas pueden generar p├®rdidas, por lo que el spread ayuda a cubrir estos riesgos.",
+            "Liquidez: El spread compensa a las instituciones por mantener una reserva de d├│lares disponible para satisfacer la demanda de los clientes.",
+            "Competencia: El spread tambi├®n refleja el nivel de competencia en el mercado cambiario; instituciones con mayor competencia pueden ofrecer spreads m├ís ajustados."
+          ]
+        },
+        "como-ahorrar": {
+          "content": [],
+          "tips": [
+            {
+              "title": "Monitorear el tipo de cambio",
+              "desc": "Mantente informado sobre las variaciones diarias del tipo de cambio para identificar momentos favorables para comprar o vender d├│lares."
+            },
+            {
+              "title": "Comparar instituciones financieras",
+              "desc": "Antes de realizar una transacci├│n, compara los tipos de cambio y spreads ofrecidos por diferentes bancos y casas de cambio."
+            },
+            {
+              "title": "Evitar cambios en lugares con altos spreads",
+              "desc": "Evita cambiar dinero en lugares con spreads elevados, como aeropuertos o zonas tur├¡sticas, donde las comisiones suelen ser m├ís altas."
+            },
+            {
+              "title": "Realizar transacciones en momentos de baja volatilidad",
+              "desc": "Las fluctuaciones del mercado pueden afectar el spread; realiza transacciones en momentos de estabilidad para obtener mejores tasas."
+            },
+            {
+              "title": "Utilizar plataformas digitales",
+              "desc": "Algunas plataformas en l├¡nea ofrecen tipos de cambio m├ís competitivos y spreads m├ís bajos que las instituciones tradicionales."
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "slug": "dolar-interbancario",
+    "data": {
+      "sections": {
+        "que-es": {
+          "content": [
+            "El d├│lar interbancario es el tipo de cambio que se establece en las transacciones de compra y venta de d├│lares entre las entidades financieras en Per├║. Este tipo de cambio refleja el valor de la moneda estadounidense en relaci├│n al sol peruano y se utiliza como referencia para diversas operaciones financieras y comerciales en el pa├¡s.",
+            "Participan en el mercado interbancario los bancos comerciales y otras instituciones financieras autorizadas por la Superintendencia de Banca, Seguros y AFP (SBS). No existen montos m├¡nimos establecidos para las transacciones, ya que estas se realizan entre entidades financieras y est├ín sujetas a las necesidades y acuerdos de las partes involucradas.",
+            "El d├│lar interbancario es la referencia del mercado porque refleja el precio al que los bancos se compran y venden d├│lares entre s├¡, lo que influye directamente en las tasas de cambio ofrecidas a clientes corporativos y, en consecuencia, a los consumidores. Adem├ís, este tipo de cambio es utilizado por el Banco Central de Reserva del Per├║ (BCRP) para sus operaciones de pol├¡tica monetaria, lo que le confiere una importancia adicional en la econom├¡a nacional."
+          ]
+        },
+        "como-funciona": {
+          "content": [
+            "El mercado interbancario es el espacio donde las instituciones financieras realizan transacciones de compra y venta de d├│lares entre s├¡. A continuaci├│n, se detallan los aspectos clave de su funcionamiento:"
+          ],
+          "bullets": [
+            "Operaciones entre entidades financieras: Las transacciones se realizan exclusivamente entre bancos y otras instituciones financieras autorizadas, sin la participaci├│n directa de personas naturales o jur├¡dicas.",
+            "Determinaci├│n del tipo de cambio: El precio del d├│lar en el mercado interbancario se establece mediante la oferta y demanda de divisas entre las entidades participantes, reflejando el valor de la moneda estadounidense en relaci├│n al sol peruano.",
+            "Influencia en el mercado cambiario: Las tasas de cambio del mercado interbancario sirven como referencia para las cotizaciones ofrecidas a clientes corporativos y, en ├║ltima instancia, a los consumidores en bancos y casas de cambio.",
+            "Operaciones de pol├¡tica monetaria: El Banco Central de Reserva del Per├║ (BCRP) utiliza el mercado interbancario para implementar sus pol├¡ticas monetarias, como la compra y venta de divisas, con el objetivo de mantener la estabilidad econ├│mica del pa├¡s.",
+            "Transparencia y regulaci├│n: El mercado interbancario est├í regulado por la Superintendencia de Banca, Seguros y AFP (SBS), lo que garantiza la transparencia y el cumplimiento de las normativas vigentes en las transacciones realizadas."
+          ]
+        },
+        "participantes": {
+          "content": [
+            "Los principales participantes en el mercado interbancario peruano son:"
+          ],
+          "cards": [
+            {
+              "nombre": "BCRP (Banco Central de Reserva del Per├║)",
+              "rol": "El BCRP act├║a como regulador y supervisor del mercado interbancario, implementando pol├¡ticas monetarias y asegurando la estabilidad financiera del pa├¡s."
+            },
+            {
+              "nombre": "Bancos comerciales",
+              "rol": "Son las instituciones financieras que realizan transacciones de compra y venta de d├│lares entre s├¡, determinando el tipo de cambio interbancario y ofreciendo servicios cambiarios a sus clientes."
+            },
+            {
+              "nombre": "Empresas de cambio de divisas autorizadas",
+              "rol": "Aunque no participan directamente en el mercado interbancario, estas empresas adquieren d├│lares de los bancos comerciales para ofrecerlos a sus clientes, influenciando indirectamente el tipo de cambio."
+            }
+          ]
+        },
+        "importancia": {
+          "content": [
+            "El d├│lar interbancario es fundamental para la econom├¡a peruana por las siguientes razones:"
+          ],
+          "bullets": [
+            "Referencia para el tipo de cambio: Sirve como base para las cotizaciones ofrecidas a clientes corporativos y consumidores, afectando el costo de importaciones y exportaciones.",
+            "Herramienta de pol├¡tica monetaria: Permite al BCRP implementar sus pol├¡ticas monetarias, como la compra y venta de divisas, para mantener la estabilidad econ├│mica.",
+            "Indicador de salud econ├│mica: Su comportamiento refleja la confianza de los inversores y la estabilidad financiera del pa├¡s, influyendo en decisiones de inversi├│n y consumo.",
+            "Facilitador de transacciones internacionales: Es esencial para operaciones de comercio exterior, inversiones extranjeras y remesas, impactando en la balanza de pagos del pa├¡s.",
+            "Transparencia y regulaci├│n: Al estar regulado por la SBS, garantiza un mercado transparente y confiable, fortaleciendo el sistema financiero nacional."
+          ]
+        }
+      }
+    }
+  }
+]
