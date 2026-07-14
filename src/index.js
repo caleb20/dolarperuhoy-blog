@@ -2,7 +2,6 @@ import 'dotenv/config';
 import { getSupabase } from './supabase.js';
 import { getWeeklyExchangeData, getMidweekExchangeData } from './exchange-data.js';
 import { generateArticle } from './ai-writer.js';
-import { fetchNewsContext } from './news-fetcher.js';
 import { publishArticle } from './publisher.js';
 
 const isDryRun = process.argv.includes('--dry-run');
@@ -15,10 +14,8 @@ function getArticleType() {
     case 'Monday': return 'weekly';
     case 'Tuesday': return 'comparativa';
     case 'Wednesday': return 'midweek';
-    case 'Thursday': return 'news';
-    case 'Friday': return 'news';
+    case 'Thursday': return 'educational';
     case 'Saturday': return 'educational';
-    case 'Sunday': return 'educational';
     default: return null;
   }
 }
@@ -27,15 +24,14 @@ const TYPE_LABELS = {
   weekly: 'Analisis Semanal',
   midweek: 'Pulso de Media Semana',
   comparativa: 'Comparativa de Tasas',
-  news: 'Articulo de Actualidad',
-  educational: 'Articulo Educativo',
+  educational: 'Guia Financiera',
 };
 
 async function main() {
   const articleType = getArticleType();
 
   if (!articleType) {
-    console.log(`[blog] Hoy no es dia de publicacion (solo Lun-Vie).`);
+    console.log(`[blog] Hoy no es dia de publicacion (Lun-Mar-Mie-Jue-Sab).`);
     process.exit(0);
   }
 
@@ -60,26 +56,14 @@ async function main() {
       process.exit(1);
     }
     console.log(`[blog] Datos: ${exchangeData.snapshots.length} snapshots recientes, ${exchangeData.houses.length} casas`);
-  } else if (articleType === 'news') {
-    exchangeData = await getMidweekExchangeData(supabase).catch(() => null);
-    if (exchangeData) {
-      console.log(`[blog] Datos: ${exchangeData.snapshots.length} snapshots recientes, ${exchangeData.houses.length} casas`);
-    } else {
-      console.log('[blog] Sin datos de tipo de cambio (opcional)');
-    }
   }
 
   const openai = new (await import('openai')).default({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  let newsContext = null;
-  if (articleType === 'news') {
-    newsContext = await fetchNewsContext(openai);
-  }
-
   console.log(`[blog] Generando articulo con IA...`);
-  const article = await generateArticle(openai, articleType, exchangeData, { newsContext });
+  const article = await generateArticle(openai, articleType, exchangeData);
 
   console.log(`[blog] Titulo: ${article.title}`);
   console.log(`[blog] Tags: ${(article.tags || []).join(', ')}`);

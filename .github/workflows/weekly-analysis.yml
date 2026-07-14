@@ -2,13 +2,11 @@ name: Publicacion Blog
 
 on:
   schedule:
-    - cron: "0 12 * * 1"   # Lun 07:00 Peru — Analisis Semanal
-    - cron: "0 12 * * 2"   # Mar 07:00 Peru — Comparativa de Tasas
-    - cron: "0 12 * * 3"   # Mie 07:00 Peru — Pulso Media Semana
-    - cron: "0 12 * * 4"   # Jue 07:00 Peru — Analisis de Actualidad
-    - cron: "0 12 * * 5"   # Vie 07:00 Peru — Analisis de Actualidad
-    - cron: "0 12 * * 6"   # Sab 07:00 Peru — Articulo Educativo
-    - cron: "0 12 * * 0"   # Dom 07:00 Peru — Articulo Educativo
+    - cron: "0 12 * * 1"   # Lun 07:00 Peru — Analisis Semanal (datos)
+    - cron: "0 12 * * 2"   # Mar 07:00 Peru — Comparativa de Tasas (datos)
+    - cron: "0 12 * * 3"   # Mie 07:00 Peru — Pulso Media Semana (datos)
+    - cron: "0 12 * * 4"   # Jue 07:00 Peru — Guia Financiera (evergreen)
+    - cron: "0 12 * * 6"   # Sab 07:00 Peru — Guia Financiera (evergreen)
   workflow_dispatch:
 
 jobs:
@@ -25,4 +23,3 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_MODEL: gpt-5.4-mini
