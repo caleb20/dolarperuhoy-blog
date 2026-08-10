@@ -31,7 +31,30 @@ REGLAS PARA TITULOS Y SEO (ALTAMENTE OPTIMIZADAS PARA CTR):
 REGLAS PARA featured_image_query (IMAGEN DE PORTADA):
 - Describe VISUALMENTE el tema del articulo en 2-5 palabras (espanol o ingles), ej: "ahorro monedas alcancia", "declaracion impuestos formulario", "deposito banco dinero", "persona planeando presupuesto"
 - La imagen DEBE corresponder al tema: si el articulo habla de CTS, ahorro, impuestos o inversiones, NUNCA uses "dolar" ni "billetes de dolar" en el query
-- Solo usa "dolar" en el query si el tema central del articulo es el tipo de cambio`;
+- Solo usa "dolar" en el query si el tema central del articulo es el tipo de cambio
+
+HERRAMIENTAS DEL SITIO (CALCULADORAS):
+- CTS -> https://www.dolarperuhoy.pe/calculadora-cts
+- Gratificacion -> https://www.dolarperuhoy.pe/calculadora-gratificacion
+- Sueldo neto -> https://www.dolarperuhoy.pe/calculadora-sueldo-neto
+- Liquidacion -> https://www.dolarperuhoy.pe/calculadora-liquidacion
+- AFP vs ONP -> https://www.dolarperuhoy.pe/calculadora-afp-onp
+- EsSalud -> https://www.dolarperuhoy.pe/calculadora-essalud
+- Horas extras -> https://www.dolarperuhoy.pe/calculadora-horas-extras
+- Vacaciones -> https://www.dolarperuhoy.pe/calculadora-vacaciones
+- Indemnizacion -> https://www.dolarperuhoy.pe/calculadora-indemnizacion-despido
+- IGV -> https://www.dolarperuhoy.pe/calculadora-igv
+- Quinta categoria -> https://www.dolarperuhoy.pe/calculadora-quinta-categoria
+- Cuarta categoria -> https://www.dolarperuhoy.pe/calculadora-cuarta-categoria
+- UIT 2026 -> https://www.dolarperuhoy.pe/calculadora-uit-2026
+- Interes compuesto -> https://www.dolarperuhoy.pe/calculadora-interes-compuesto
+- Inflacion -> https://www.dolarperuhoy.pe/calculadora-inflacion
+- Jubilacion -> https://www.dolarperuhoy.pe/calculadora-pension-jubilacion
+- Plazo fijo -> https://www.dolarperuhoy.pe/calculadora-plazo-fijo
+- Prestamo -> https://www.dolarperuhoy.pe/calculadora-prestamo
+- Hipotecario -> https://www.dolarperuhoy.pe/calculadora-prestamo-hipotecario
+- Credito FIC -> https://www.dolarperuhoy.pe/calculadora-credito-fic
+- Presupuesto -> https://www.dolarperuhoy.pe/calculadora-presupuesto`;
 
 function getDayContext() {
   return new Date().toLocaleDateString('es-PE', {
@@ -215,6 +238,7 @@ INSTRUCCIONES:
 - Tono directo y util
 - Incluye ejemplos con montos realistas
 - Enfasis en el ahorro y la mejor decision
+- Si el tema tiene una calculadora en la lista de HERRAMIENTAS DEL SITIO, incluye al final del articulo (body_html) una seccion corta tipo: "Calcula tu monto exacto con la calculadora de [nombre] de DolarPeruHoy" enlazada a su URL. Solo menciona la herramienta que aplique al tema; si ninguna aplica, omitela.
 
 ESTRUCTURA:
 ${selected}
@@ -366,6 +390,7 @@ INSTRUCCIONES:
 - Tono didactico y accesible
 - Ejemplos practicos con montos realistas
 - No menciones "segun expertos" o "estudios recientes"
+- Si el tema tiene una calculadora en la lista de HERRAMIENTAS DEL SITIO, incluye al final del articulo (body_html) una seccion corta tipo: "Calcula tu monto exacto con la calculadora de [nombre] de DolarPeruHoy" enlazada a su URL. Solo menciona la herramienta que aplique al tema; si ninguna aplica, omitela.
 ${isSeasonal ? `- IMPORTANTE: Usa fechas y datos concretos (ej: "la gratificacion se deposita en julio", "la CTS se paga en mayo y noviembre"). No inventes cifras oficiales exactas pero si da rangos realistas y contexto temporal util.` : `- NO uses fechas ni eventos concretos. Manten el contenido atemporal.`}
 
 ESTRUCTURA (body_html):
