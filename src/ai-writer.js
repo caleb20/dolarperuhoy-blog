@@ -26,7 +26,12 @@ REGLAS PARA TITULOS Y SEO (ALTAMENTE OPTIMIZADAS PARA CTR):
 - seo_title: Max 55-60 chars. MAS CORTO Y DIRECTO. Incluye keyword + dato numerico o diferencia. Ej: "CTS 2026: Monto, Fechas y Calculo" | "Dolar Hoy: Cotizacion a S/3.42 en Peru"
 - seo_description: Max 150-155 chars. Usa este patron: [keyword] + [dato concreto] + [beneficio para el lector] + [llamada a accion suave]. Ej: "?Descubre cuando pagan la CTS 2026 en Peru, cuanto recibes segun tu sueldo y hasta cuando puedes retirarla. Calcula tu monto exacto aqui."
 - EVITA ABSOLUTAMENTE titulos genericos. Cada titulo debe ser UNICO y responderse esta pregunta: "?Por que alguien haria clic en esto y no en otro resultado?"
-- Los tags deben incluir la keyword principal y terminos relacionados que la gente busca`;
+- Los tags deben incluir la keyword principal y terminos relacionados que la gente busca
+
+REGLAS PARA featured_image_query (IMAGEN DE PORTADA):
+- Describe VISUALMENTE el tema del articulo en 2-5 palabras (espanol o ingles), ej: "ahorro monedas alcancia", "declaracion impuestos formulario", "deposito banco dinero", "persona planeando presupuesto"
+- La imagen DEBE corresponder al tema: si el articulo habla de CTS, ahorro, impuestos o inversiones, NUNCA uses "dolar" ni "billetes de dolar" en el query
+- Solo usa "dolar" en el query si el tema central del articulo es el tipo de cambio`;
 
 function getDayContext() {
   return new Date().toLocaleDateString('es-PE', {
@@ -177,12 +182,18 @@ function buildGuiaPrompt() {
   const GUIAS = [
     "Como comprar dolares en Peru: guia paso a paso",
     "Como vender dolares en Peru obteniendo la mejor tasa",
-    "Comparativa: casas de cambio online vs casas fisicas en Lima",
     "Guia para enviar y recibir remesas desde el extranjero",
-    "Como afecta el riesgo pais al tipo de cambio peruano",
-    "Que bancos ofrecen el mejor tipo de cambio en Peru",
     "Estrategias para cambiar dolares antes de viajar al extranjero",
-    "Como funciona el mercado paralelo de dolares en Peru",
+    "Como funcionan el dolar paralelo y el interbancario en Peru",
+    "CTS 2026: guia paso a paso para calcular tu deposito",
+    "Gratificacion: como calcular cuantos soles te depositan",
+    "Como hacer un presupuesto mensual que funcione: guia practica",
+    "Fondo de emergencia: cuanto ahorrar y donde guardarlo en Peru",
+    "Guia para abrir un deposito a plazo fijo y ganar mas intereses",
+    "Tarjeta de credito: como usarla sin pagar intereses",
+    "Guia para elegir tu primer seguro de salud en Peru",
+    "Como funciona el credito hipotecario y cuanto necesitas para la cuota",
+    "Impuestos para trabajadores: que descuentos te aplican en planilla",
   ];
   const topic = GUIAS[Math.floor(Math.random() * GUIAS.length)];
   const GUIAS_STRUCTURES = [
@@ -194,7 +205,7 @@ function buildGuiaPrompt() {
 
   return `Fecha actual: ${getDayContext()}
 
-Escribe una GUIA PRACTICA sobre el dolar en Peru.
+Escribe una GUIA PRACTICA sobre finanzas personales o el dolar en Peru.
 
 TEMA: "${topic}"
 
@@ -229,33 +240,34 @@ JSON:
 
 const EDUCATIONAL_TOPICS = [
   // --- Siempre verdes (indefinido) ---
-  "Que es el spread cambiario y por que deberia importarte",
-  "5 errores comunes al cambiar dolares en Peru",
-  "Casas de cambio online vs bancos: cual te conviene mas",
   "Por que sube y baja el dolar: factores que afectan el tipo de cambio",
-  "Como proteger tus ahorros de la volatilidad cambiaria",
-  "Conviene comprar dolares ahora o esperar: guia practica",
-  "Todo lo que debes saber sobre el spread bancario en Peru",
   "El rol del BCRP en el tipo de cambio peruano",
   "Remesas desde el extranjero: como obtener el mejor tipo de cambio",
-  "Diferencias entre tipo de cambio oficial, paralelo e interbancario",
-  "Cuando es mejor cambiar dolares en Peru: horarios y dias recomendados",
-  "Como detectar una buena tasa de cambio vs una mala",
-  "Estrategias de ahorro en dolares para peruanos",
   "Entendiendo la dolarizacion parcial de la economia peruana",
-  "Impuestos y comisiones al cambiar dolares en Peru: lo que debes saber",
-  "Inflacion en Peru: como afecta el valor de tus ahorros en soles",
   "Que es el indice de tipo de cambio real y por que importa",
-  "Como negociar una mejor tasa de cambio en una casa de cambio",
-  "ETF en dolares: una opcion de inversion para peruanos",
-  "Dolarizar tu portafolio: cuanto y cuando hacerlo",
   "Criptomonedas vs dolar: cual es mejor refugio en Peru",
   "Entendiendo las reservas internacionales y su efecto en el dolar",
   "Prestamos en dolares vs soles: cual te conviene mas en 2026",
+  "ETF en dolares: una opcion de inversion para peruanos",
   "Cuanto debes ganar para vivir bien en Peru en 2026",
   "Presupuesto familiar: como distribuir tus ingresos mensuales",
   "Ahorro e inversion: diferencias y cual empezar primero",
   "Tarjetas de credito en Peru: cuotas sin intereses vs pago total",
+  "Fondo de emergencia: cuanto ahorrar y donde guardarlo en Peru",
+  "Gastos hormiga: como identificarlos y ahorrar mas cada mes",
+  "Alquilar o comprar departamento en Peru: analisis financiero",
+  "Seguros de salud en Peru: EPS vs SIS vs seguros privados",
+  "Comprar auto en Peru: credito vehicular vs pagar al contado",
+  "Emprender en Peru: costos de formalizacion y primeros pasos",
+  "Sunat: cuanto puedes ganar sin pagar impuestos",
+  "MiVivienda 2026: requisitos, cuotas y como acceder al credito",
+  "Cajas municipales: por que pagan mas interes que los bancos",
+  "Historial crediticio: que es y como mejorarlo en Peru",
+  "Cuanto cuesta vivir en provincia vs Lima en 2026",
+  "Seguro de vida: cuanto cuesta y como elegirlo en Peru",
+  "Educacion financiera para tu primer sueldo: que hacer primero",
+  "Yape y Plin: limites, comisiones y seguridad en pagos",
+  "Cuanto de tu sueldo puedes destinar a alquiler y gastos fijos",
   // --- Estacionales: Enero - Febrero ---
   "CTS 2026: calendario de pagos, fechas clave y como calcular el deposito",
   "Declaracion de Renta 2025 SUNAT: cronograma paso a paso",
@@ -345,7 +357,7 @@ function buildEducationalPrompt() {
 
   return `Fecha actual: ${getDayContext()}
 
-Escribe un ARTICULO EDUCATIVO sobre el dolar en Peru.
+Escribe un ARTICULO EDUCATIVO sobre finanzas personales o el dolar en Peru.
 
 TEMA: "${topic}"
 
