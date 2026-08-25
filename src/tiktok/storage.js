@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+
 export async function ensurePublicBucket(supabase, bucket) {
   const { data: buckets } = await supabase.storage.listBuckets();
   const exists = (buckets || []).some((b) => b.name === bucket);
@@ -16,9 +18,10 @@ export async function uploadSlides(supabase, bucket, remoteDir, files) {
   for (const filePath of files) {
     const name = filePath.split(/[\\/]/).pop();
     const remotePath = `${remoteDir}/${name}`;
+    const body = fs.readFileSync(filePath);
     const { error } = await supabase.storage
       .from(bucket)
-      .upload(remotePath, filePath, { contentType: 'image/jpeg', upsert: true });
+      .upload(remotePath, body, { contentType: 'image/jpeg', upsert: true });
     if (error) throw new Error(`Subida falló (${remotePath}): ${error.message}`);
     const { data } = supabase.storage.from(bucket).getPublicUrl(remotePath);
     urls.push(data.publicUrl);

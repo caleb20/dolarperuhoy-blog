@@ -103,7 +103,7 @@ async function main() {
   const { data, render } = await prepare(day, supabase, openai);
   const caption = buildCaption(day, data);
 
-  const stamp = new Date().toISOString().slice(0, 10);
+  const stamp = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Lima' });
   const outDir = path.join(__dirname, '../../temp/tiktok-out', `${day}-${stamp}`);
   console.log(`[tiktok] Renderizando slides en ${outDir} ...`);
   const files = await render(outDir);
