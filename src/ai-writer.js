@@ -201,7 +201,7 @@ JSON:
 }`;
 }
 
-function buildGuiaPrompt() {
+function buildGuiaPrompt(recentTopics = []) {
   const GUIAS = [
     "Como comprar dolares en Peru: guia paso a paso",
     "Como vender dolares en Peru obteniendo la mejor tasa",
@@ -218,7 +218,9 @@ function buildGuiaPrompt() {
     "Como funciona el credito hipotecario y cuanto necesitas para la cuota",
     "Impuestos para trabajadores: que descuentos te aplican en planilla",
   ];
-  const topic = GUIAS[Math.floor(Math.random() * GUIAS.length)];
+  const guiaPool = GUIAS.filter((t) => !recentTopics.includes(t));
+  const finalGuiaPool = guiaPool.length > 0 ? guiaPool : GUIAS;
+  const topic = finalGuiaPool[Math.floor(Math.random() * finalGuiaPool.length)];
   const GUIAS_STRUCTURES = [
     'Abre con el objetivo de la guia, lista los pasos o requisitos, desarrolla cada paso en detalle, y cierra con resumen y recomendacion',
     'Empieza con la pregunta principal, da opciones comparadas, muestra ejemplos practicos, termina con una recomendacion clara',
@@ -262,8 +264,7 @@ JSON:
 }`;
 }
 
-const EDUCATIONAL_TOPICS = [
-  // --- Siempre verdes (indefinido) ---
+const EVERGREEN_TOPICS = [
   "Por que sube y baja el dolar: factores que afectan el tipo de cambio",
   "El rol del BCRP en el tipo de cambio peruano",
   "Remesas desde el extranjero: como obtener el mejor tipo de cambio",
@@ -292,84 +293,95 @@ const EDUCATIONAL_TOPICS = [
   "Educacion financiera para tu primer sueldo: que hacer primero",
   "Yape y Plin: limites, comisiones y seguridad en pagos",
   "Cuanto de tu sueldo puedes destinar a alquiler y gastos fijos",
-  // --- Estacionales: Enero - Febrero ---
-  "CTS 2026: calendario de pagos, fechas clave y como calcular el deposito",
-  "Declaracion de Renta 2025 SUNAT: cronograma paso a paso",
-  "Declaracion de Renta 2025: como declarar por primera vez ante SUNAT",
-  "Vacaciones utiles 2026: cuanto cuestan y como financiarlas",
-  "Impuestos a la renta Peru: todo lo que debes saber como trabajador",
-  "Sunat 2026: nuevas obligaciones fiscales para personas naturales",
-  // --- Estacionales: Marzo - Abril ---
-  "CTS 2026: fecha de deposito mayo, calcular monto y hasta cuando retirar",
-  "CTS 2026: conviene retirar todo o dejarlo en el banco",
-  "Declaracion de Renta 2025 SUNAT: ultimos dias y como declarar correcto",
-  "Inflacion en Peru 2026: como afecta tu economia diaria y ahorros",
-  "Tipo de cambio Abril 2026: tendencias y perspectivas del dolar en Peru",
-  "Casas de cambio en Lima vs online: cual opcion da mejor tasa",
-  // --- Estacionales: Mayo - Junio ---
-  "Gratificacion Julio 2026: fecha tope, calculo del monto y deposito",
-  "Gratificacion 2026: cuanto te deposita tu empleador y como se calcula",
-  "CTS mayo 2026: ya depositaron, cuanto retirar y que hacer con ese dinero",
-  "CTS y Gratificacion: diferencias, montos y cuales son tus derechos",
-  "Invertir tu gratificacion: opciones seguras y rentables en Peru",
-  "Tipo de cambio Junio 2026: tendencia del dolar antes de Fiestas Patrias",
-  "Prestamos en bancos peruanos: tasas de interes y cual elegir en 2026",
-  "Cuanto cuesta vivir en Lima 2026: presupuesto mensual actualizado",
-  // --- Estacionales: Julio - Agosto ---
-  "Fiestas Patrias Peru 2026: cuanto gastaran los peruanos en julio",
-  "Presupuesto para Fiestas Patrias: celebrar sin descuidar tus finanzas",
-  "Tipo de cambio post Fiestas Patrias: tendencia del dolar en agosto",
-  "Ahorro en soles vs dolares en Peru: que conviene mas en 2026",
-  "Gratificacion recibida: donde invertir ese dinero extra",
-  "Seguro de desempleo Peru 2026: como funciona y quienes pueden acceder",
-  "Historial crediticio en Peru: como mejorarlo para obtener prestamos",
-  "CTS noviembre 2026: lo que debes saber con 3 meses de anticipacion",
-  // --- Estacionales: Setiembre - Octubre ---
-  "CTS noviembre 2026: fecha exacta, calculo y guia completa",
-  "CTS 2026: cuanto depositan en noviembre y hasta cuando retirar",
-  "Gratificacion Diciembre 2026: fecha, calculo y cuanto te pagan",
-  "ONP o AFP en 2026: cual te conviene mas segun tu sueldo y edad",
-  "Tipo de cambio Octubre 2026: panorama del dolar en Peru",
-  "Presupuesto para fin de ano: prepara tus finanzas para Navidad",
-  // --- Estacionales: Noviembre - Diciembre ---
-  "Gratificacion Diciembre 2026: fecha tope y cuanto te depositan",
-  "Navidad 2026: cuanto gastaran los peruanos en regalos y cena",
-  "Cierre de ano 2026: proteger tus ahorros de la volatilidad del dolar",
-  "Propósitos financieros 2027: metas de ahorro e inversion",
-  "Compra navidad: como no endeudarte en diciembre con tarjetas",
-  "Cuentas de ahorro en Peru 2026: mejores tasas y donde abrirlas",
 ];
 
-function getWeightedTopic() {
+// Cada grupo cubre los 2 meses indicados como llave ("mes-mes").
+// El contenido debe publicarse 1-3 meses ANTES del pico real (CTS 15 may/nov,
+// Gratificacion 15 jul/dic, Declaracion de Renta mar-abr, Fiestas Patrias 28 jul).
+const SEASONAL_TOPICS = {
+  '1-2': [ // Ene-Feb: planificacion del ano + Declaracion de Renta (pico mar-abr)
+    "CTS 2026: calendario de pagos, fechas clave y como calcular el deposito",
+    "Declaracion de Renta 2025 SUNAT: cronograma paso a paso",
+    "Declaracion de Renta 2025: como declarar por primera vez ante SUNAT",
+    "Vacaciones utiles 2026: cuanto cuestan y como financiarlas",
+    "Impuestos a la renta Peru: todo lo que debes saber como trabajador",
+    "Sunat 2026: nuevas obligaciones fiscales para personas naturales",
+    "Calendario laboral 2026: feriados largos, dias compensables y puentes",
+  ],
+  '3-4': [ // Mar-Abr: CTS mayo (pico 15 may) + cola de Declaracion de Renta
+    "CTS 2026: fecha de deposito mayo, calcular monto y hasta cuando retirar",
+    "CTS 2026: conviene retirar todo o dejarlo en el banco",
+    "Declaracion de Renta 2025 SUNAT: ultimos dias y como declarar correcto",
+    "Inflacion en Peru 2026: como afecta tu economia diaria y ahorros",
+    "Tipo de cambio Abril 2026: tendencias y perspectivas del dolar en Peru",
+    "Casas de cambio en Lima vs online: cual opcion da mejor tasa",
+  ],
+  '5-6': [ // May-Jun: Gratificacion julio (pico 15 jul) + Fiestas Patrias (28 jul) con anticipacion
+    "Gratificacion Julio 2026: fecha tope, calculo del monto y deposito",
+    "Gratificacion 2026: cuanto te deposita tu empleador y como se calcula",
+    "CTS mayo 2026: ya depositaron, cuanto retirar y que hacer con ese dinero",
+    "CTS y Gratificacion: diferencias, montos y cuales son tus derechos",
+    "Invertir tu gratificacion: opciones seguras y rentables en Peru",
+    "Tipo de cambio Junio 2026: tendencia del dolar antes de Fiestas Patrias",
+    "Prestamos en bancos peruanos: tasas de interes y cual elegir en 2026",
+    "Cuanto cuesta vivir en Lima 2026: presupuesto mensual actualizado",
+    "Fiestas Patrias Peru 2026: cuanto gastaran los peruanos en julio",
+    "Presupuesto para Fiestas Patrias: celebrar sin descuidar tus finanzas",
+  ],
+  '7-8': [ // Jul-Ago: contenido posterior a Fiestas Patrias + adelanto de CTS noviembre
+    "Tipo de cambio post Fiestas Patrias: tendencia del dolar en agosto",
+    "Ahorro en soles vs dolares en Peru: que conviene mas en 2026",
+    "Gratificacion recibida: donde invertir ese dinero extra",
+    "Seguro de desempleo Peru 2026: como funciona y quienes pueden acceder",
+    "Historial crediticio en Peru: como mejorarlo para obtener prestamos",
+    "CTS noviembre 2026: lo que debes saber con 3 meses de anticipacion",
+  ],
+  '9-10': [ // Sep-Oct: CTS noviembre (pico 15 nov) + Gratificacion diciembre (pico 15 dic)
+    "CTS noviembre 2026: fecha exacta, calculo y guia completa",
+    "CTS 2026: cuanto depositan en noviembre y hasta cuando retirar",
+    "Gratificacion Diciembre 2026: fecha, calculo y cuanto te pagan",
+    "ONP o AFP en 2026: cual te conviene mas segun tu sueldo y edad",
+    "Tipo de cambio Octubre 2026: panorama del dolar en Peru",
+    "Presupuesto para fin de ano: prepara tus finanzas para Navidad",
+  ],
+  '11-12': [ // Nov-Dic: cola de Gratificacion diciembre + cierre de ano
+    "Gratificacion Diciembre 2026: fecha tope y cuanto te depositan",
+    "Navidad 2026: cuanto gastaran los peruanos en regalos y cena",
+    "Cierre de ano 2026: proteger tus ahorros de la volatilidad del dolar",
+    "Propósitos financieros 2027: metas de ahorro e inversion",
+    "Compra navidad: como no endeudarte en diciembre con tarjetas",
+    "Cuentas de ahorro en Peru 2026: mejores tasas y donde abrirlas",
+  ],
+};
+
+function getSeasonalTopics(month) {
+  const key = Object.keys(SEASONAL_TOPICS).find((k) => {
+    const [a, b] = k.split('-').map(Number);
+    return month === a || month === b;
+  });
+  return key ? SEASONAL_TOPICS[key] : [];
+}
+
+function getWeightedTopic(recentTopics = []) {
   const now = new Date();
   const month = now.getMonth() + 1; // 1-12
 
-  // Indices en EDUCATIONAL_TOPICS: siempre verde [0-27], luego grupos bimensuales
-  const evergreen = { start: 0, end: 27 };
-  const groups = [
-    { months: [1, 2],  start: 28, end: 33 },  // Ene-Feb
-    { months: [3, 4],  start: 34, end: 39 },  // Mar-Abr
-    { months: [5, 6],  start: 40, end: 47 },  // May-Jun
-    { months: [7, 8],  start: 48, end: 55 },  // Jul-Ago
-    { months: [9, 10], start: 56, end: 61 },  // Sep-Oct
-    { months: [11, 12],start: 62, end: 67 },  // Nov-Dic
-  ];
-
-  const current = groups.find((g) => g.months.includes(month));
-  const seasonal = current
-    ? EDUCATIONAL_TOPICS.slice(current.start, current.end + 1)
-    : [];
+  const seasonal = getSeasonalTopics(month);
 
   // 50% estacional, 50% siempre verde (evita saturar con el mismo tema)
-  const pool = Math.random() < 0.5 && seasonal.length > 0
+  const basePool = Math.random() < 0.5 && seasonal.length > 0
     ? seasonal
-    : EDUCATIONAL_TOPICS.slice(evergreen.start, evergreen.end + 1);
+    : EVERGREEN_TOPICS;
 
-  return pool[Math.floor(Math.random() * pool.length)];
+  // Evita repetir un tema que ya se publico recientemente, si hay alternativas
+  const pool = basePool.filter((t) => !recentTopics.includes(t));
+  const finalPool = pool.length > 0 ? pool : basePool;
+
+  return finalPool[Math.floor(Math.random() * finalPool.length)];
 }
 
-function buildEducationalPrompt() {
-  const topic = getWeightedTopic();
+function buildEducationalPrompt(recentTopics = []) {
+  const topic = getWeightedTopic(recentTopics);
   const EDU_STRUCTURES = [
     'Abre con una pregunta o situacion cotidiana, luego explica los conceptos, da ejemplos practicos, y cierra con consejos aplicables',
     'Empieza definiendo el problema, luego desarrolla las alternativas o soluciones, y termina con recomendaciones',
@@ -460,11 +472,11 @@ export async function generateArticle(openai, type, data, options = {}) {
       break;
     case 'guia':
       system += '\n\nEscribes una GUIA PRACTICA basada en conocimiento general. NO citas fuentes externas.';
-      userPrompt = buildGuiaPrompt();
+      userPrompt = buildGuiaPrompt(options.recentTopics || []);
       break;
     case 'educational':
       system += '\n\nEscribes contenido EDUCATIVO basado en conocimiento general de economia y finanzas. NO citas fuentes externas.';
-      userPrompt = buildEducationalPrompt();
+      userPrompt = buildEducationalPrompt(options.recentTopics || []);
       break;
     default:
       throw new Error(`Tipo desconocido: ${type}`);
@@ -496,7 +508,7 @@ export async function generateArticle(openai, type, data, options = {}) {
       }
 
       article._type = type;
-      article._topic = type === 'educational' ? userPrompt.match(/TEMA: "(.+)"/)?.[1] : null;
+      article._topic = (type === 'educational' || type === 'guia') ? userPrompt.match(/TEMA: "(.+)"/)?.[1] : null;
 
       return article;
     } catch (error) {

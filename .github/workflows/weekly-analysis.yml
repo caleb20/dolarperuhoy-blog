@@ -6,12 +6,15 @@ on:
     - cron: "0 12 * * 2"   # Mar 07:00 Peru — Comparativa de Tasas (datos)
     - cron: "0 12 * * 3"   # Mie 07:00 Peru — Pulso Media Semana (datos)
     - cron: "0 12 * * 4"   # Jue 07:00 Peru — Guia Financiera (evergreen)
+    - cron: "0 12 * * 5"   # Vie 07:00 Peru — Guia Practica (evergreen)
     - cron: "0 12 * * 6"   # Sab 07:00 Peru — Guia Financiera (evergreen)
   workflow_dispatch:
 
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,6 +26,17 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Guardar seguimiento de temas publicados
+        run: |
+          if ! git diff --quiet -- data/recent-topics.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add data/recent-topics.json
+            git commit -m "chore: registrar tema publicado [skip ci]"
+            git push
+          else
+            echo "Sin cambios en data/recent-topics.json"
+          fi
 
   tiktok:
     runs-on: ubuntu-latest

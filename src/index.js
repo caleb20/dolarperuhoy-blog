@@ -1,8 +1,42 @@
 import 'dotenv/config';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { getSupabase } from './supabase.js';
 import { getWeeklyExchangeData, getMidweekExchangeData } from './exchange-data.js';
 import { generateArticle } from './ai-writer.js';
 import { publishArticle } from './publisher.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const TOPICS_FILE = path.join(__dirname, '..', 'data', 'recent-topics.json');
+const TOPIC_MEMORY_DAYS = 65; // cubre la ventana estacional bimensual + margen
+
+function loadRecentTopicsEntries() {
+  try {
+    const raw = fs.readFileSync(TOPICS_FILE, 'utf-8');
+    const entries = JSON.parse(raw);
+    return Array.isArray(entries) ? entries : [];
+  } catch {
+    return [];
+  }
+}
+
+function pruneOldEntries(entries) {
+  const cutoff = Date.now() - TOPIC_MEMORY_DAYS * 24 * 60 * 60 * 1000;
+  return entries.filter((e) => new Date(e.date).getTime() >= cutoff);
+}
+
+function getRecentTopics() {
+  return pruneOldEntries(loadRecentTopicsEntries()).map((e) => e.topic);
+}
+
+function recordTopic(topic) {
+  if (!topic) return;
+  const entries = pruneOldEntries(loadRecentTopicsEntries());
+  entries.push({ topic, date: new Date().toISOString() });
+  fs.mkdirSync(path.dirname(TOPICS_FILE), { recursive: true });
+  fs.writeFileSync(TOPICS_FILE, JSON.stringify(entries, null, 2));
+}
 
 const isDryRun = process.argv.includes('--dry-run');
 const FORCED_TYPE = process.env.FORCE_TYPE || process.argv.find((a) => a.startsWith('--type='))?.split('=')[1];
@@ -15,6 +49,7 @@ function getArticleType() {
     case 'Tuesday': return 'comparativa';
     case 'Wednesday': return 'midweek';
     case 'Thursday': return 'educational';
+    case 'Friday': return 'guia';
     case 'Saturday': return 'educational';
     default: return null;
   }
@@ -25,7 +60,10 @@ const TYPE_LABELS = {
   midweek: 'Pulso de Media Semana',
   comparativa: 'Comparativa de Tasas',
   educational: 'Guia Financiera',
+  guia: 'Guia Practica',
 };
+
+const TOPIC_TRACKED_TYPES = new Set(['educational', 'guia']);
 
 async function main() {
   const articleType = getArticleType();
@@ -62,12 +100,18 @@ async function main() {
     apiKey: process.env.OPENAI_API_KEY,
   });
 
+  const recentTopics = TOPIC_TRACKED_TYPES.has(articleType) ? getRecentTopics() : [];
+  if (TOPIC_TRACKED_TYPES.has(articleType)) {
+    console.log(`[blog] Temas evitados (publicados en los ultimos ${TOPIC_MEMORY_DAYS} dias): ${recentTopics.length}`);
+  }
+
   console.log(`[blog] Generando articulo con IA...`);
-  const article = await generateArticle(openai, articleType, exchangeData);
+  const article = await generateArticle(openai, articleType, exchangeData, { recentTopics });
 
   console.log(`[blog] Titulo: ${article.title}`);
   console.log(`[blog] Tags: ${(article.tags || []).join(', ')}`);
   console.log(`[blog] Imagen: ${article.featured_image_query || 'default'}`);
+  if (article._topic) console.log(`[blog] Tema: ${article._topic}`);
 
   if (isDryRun) {
     console.log(`\n========== DRY RUN ==========`);
@@ -94,6 +138,10 @@ async function main() {
     console.log(`[blog] El articulo ya existia (${result.slug}). Todo ok.`);
   } else {
     console.log(`[blog] Publicado: /blog/${result.slug}`);
+    if (TOPIC_TRACKED_TYPES.has(articleType) && article._topic) {
+      recordTopic(article._topic);
+      console.log(`[blog] Tema registrado para evitar repetirlo pronto.`);
+    }
   }
 
   console.log(`[blog] Proceso completado.`);
