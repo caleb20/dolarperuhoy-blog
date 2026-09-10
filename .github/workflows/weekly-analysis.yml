@@ -37,26 +37,3 @@ jobs:
           else
             echo "Sin cambios en data/recent-topics.json"
           fi
-
-  tiktok:
-    runs-on: ubuntu-latest
-    needs: generate
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: npm ci
-      - run: npm run tiktok:hoy
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
-          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
-          TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
-          TIKTOK_POST_MODE: ${{ secrets.TIKTOK_POST_MODE || 'DIRECT_POST' }}
-          TIKTOK_PRIVACY_LEVEL: ${{ secrets.TIKTOK_PRIVACY_LEVEL || 'SELF_ONLY' }}
-          TIKTOK_ENABLED: 'false'
-          TIKTOK_BUCKET: tiktok

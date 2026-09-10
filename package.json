@@ -11,18 +11,9 @@
     "educational": "node src/index.js --type=educational",
     "dry-weekly": "node src/index.js --dry-run --type=weekly",
     "dry-midweek": "node src/index.js --dry-run --type=midweek",
-    "dry-educational": "node src/index.js --dry-run --type=educational",
-    "tiktok:lunes": "node src/tiktok/index.js --type=lunes",
-    "tiktok:martes": "node src/tiktok/index.js --type=martes",
-    "tiktok:miercoles": "node src/tiktok/index.js --type=miercoles",
-    "tiktok:jueves": "node src/tiktok/index.js --type=jueves",
-    "tiktok:sabado": "node src/tiktok/index.js --type=sabado",
-    "tiktok:hoy": "node src/tiktok/index.js",
-    "tiktok:dry": "node src/tiktok/index.js --dry-run",
-    "tiktok:auth": "node scripts/tiktok-auth.js"
+    "dry-educational": "node src/index.js --dry-run --type=educational"
   },
   "dependencies": {
-    "@napi-rs/canvas": "^1.0.8",
     "@supabase/supabase-js": "^2.0.0",
     "dotenv": "^17.3.1",
     "openai": "^6.0.0"
